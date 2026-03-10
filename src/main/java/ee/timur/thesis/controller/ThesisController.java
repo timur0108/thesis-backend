@@ -25,4 +25,5 @@ public class ThesisController {
     ThesisDTO getById(@PathVariable Long id) {
         return thesisService.getThesisById(id);
     }
+
 }

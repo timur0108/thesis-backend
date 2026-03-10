@@ -1,9 +1,11 @@
 package ee.timur.thesis.security;
 
+import ee.timur.thesis.model.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -43,12 +45,15 @@ public class JwtService {
                 .compact();
     }
 
-    public String generateAccessToken(String username, String role) {
+    public String generateAccessToken(User user) {
+        String role = user.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList().getFirst();
+        String username = user.getEmail();
         return Jwts.builder()
                 .claims()
                 .subject(username)
                 .add("type", "access")
                 .add("role", role)
+                .add("userId", user.getId())
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 15))
                 .and()
@@ -91,6 +96,10 @@ public class JwtService {
 
     public String extractRole(String token) {
         return extractClaim(token, claims -> claims.get("role", String.class));
+    }
+
+    public Long extractUserId(String token) {
+        return extractClaim(token, claims -> claims.get("userId", Long.class));
     }
 
     private <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {

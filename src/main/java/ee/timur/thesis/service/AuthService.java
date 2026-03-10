@@ -36,8 +36,7 @@ public class AuthService {
 
         User user = (User) userDetailsService.loadUserByUsername(email);
 
-        String role = user.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList().getFirst();
-        String accessToken = jwtService.generateAccessToken(user.getUsername(), role);
+        String accessToken = jwtService.generateAccessToken(user);
         String refreshToken = jwtService.generateRefreshToken(user.getUsername());
 
         return new AuthResult(accessToken, refreshToken, user.getEmail(), user.getRole().getRoleName());
@@ -47,13 +46,12 @@ public class AuthService {
     public RefreshTokenResult refreshTokens(String refreshToken) {
         String username = jwtService.extractName(refreshToken);
 
-        UserDetails user = userDetailsService.loadUserByUsername(username);
+        User user = (User) userDetailsService.loadUserByUsername(username);
         if (!jwtService.validateRefreshToken(refreshToken, user)) {
             throw new RuntimeException();
         }
 
-        String role = user.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList().getFirst();
-        String newAccessToken = jwtService.generateAccessToken(user.getUsername(), role);
+        String newAccessToken = jwtService.generateAccessToken(user);
         String newRefreshToken = jwtService.generateRefreshToken(user.getUsername());
 
         return new RefreshTokenResult(newAccessToken, newRefreshToken);

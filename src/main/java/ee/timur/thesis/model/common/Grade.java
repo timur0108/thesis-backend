@@ -1,6 +1,7 @@
 package ee.timur.thesis.model.common;
 
 import ee.timur.thesis.model.Thesis;
+import ee.timur.thesis.model.User;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -23,7 +24,6 @@ public class Grade {
     @NotNull
     private Integer complexityScore;
 
-
     @Column(name = "appearance_score")
     @NotNull
     private Integer appearanceScore;
@@ -32,4 +32,9 @@ public class Grade {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "thesis_id")
     private Thesis thesis;
+
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "user_id")
+    private User user;
 }

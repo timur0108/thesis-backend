@@ -1,6 +1,6 @@
+DROP TABLE IF EXISTS reviewer_grade;
 DROP TABLE IF EXISTS "user";
 DROP TABLE IF EXISTS "role";
-DROP TABLE IF EXISTS reviewer_grade;
 DROP TABLE IF EXISTS thesis;
 
 CREATE TABLE IF NOT EXISTS thesis (
@@ -51,5 +51,12 @@ CREATE TABLE reviewer_grade (
                         thesis_id BIGINT,
                         CONSTRAINT fk_reviewer_grade_thesis
                         FOREIGN KEY (thesis_id)
-                        REFERENCES thesis(id)
+                        REFERENCES thesis(id),
+
+                        user_id BIGINT,
+                        CONSTRAINT fk_reviewer_grade_user
+                        FOREIGN KEY (user_id)
+                        REFERENCES "user"(id),
+
+                        CONSTRAINT uq_user_thesis UNIQUE (user_id, thesis_id)
 );
