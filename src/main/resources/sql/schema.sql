@@ -1,4 +1,5 @@
 DROP TABLE IF EXISTS reviewer_grade;
+DROP TABLE IF EXISTS committee_member_grade;
 DROP TABLE IF EXISTS "user";
 DROP TABLE IF EXISTS "role";
 DROP TABLE IF EXISTS thesis;
@@ -59,4 +60,31 @@ CREATE TABLE reviewer_grade (
                         REFERENCES "user"(id),
 
                         CONSTRAINT uq_user_thesis UNIQUE (user_id, thesis_id)
+);
+
+CREATE TABLE committee_member_grade (
+                                id BIGSERIAL PRIMARY KEY,
+
+                                content_score INTEGER NOT NULL,
+
+
+                                complexity_score INTEGER NOT NULL,
+
+
+                                appearance_score INTEGER NOT NULL,
+
+                                presentation_score INTEGER NOT NULL,
+                                visible_to_others BOOLEAN NOT NULL DEFAULT FALSE,
+
+                                thesis_id BIGINT,
+                                CONSTRAINT fk_committee_member_grade_thesis
+                                    FOREIGN KEY (thesis_id)
+                                        REFERENCES thesis(id),
+
+                                user_id BIGINT,
+                                CONSTRAINT fk_committee_member_grade_user
+                                    FOREIGN KEY (user_id)
+                                        REFERENCES "user"(id),
+
+                                CONSTRAINT commitee_member_grade_uq_user_thesis UNIQUE (user_id, thesis_id)
 );
