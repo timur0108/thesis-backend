@@ -10,4 +10,6 @@ public class CommitteeMemberGradeDTO {
     private Integer complexityScore;
     private Integer appearanceScore;
     private Integer presentationScore;
+    private String name;
+    private String secondName;
 }
