@@ -92,6 +92,36 @@ public class GradeService {
                 .orElse(null);
     }
 
+    @PreAuthorize("hasAuthority('HEAD_OF_COMMITTEE')")
+    @Transactional
+    public List<CommitteeMemberGradeDTO> makeCommitteeMemberGradesVisible(Long thesisId) {
+        return committeeMemberGradeRepository.saveAll(
+                committeeMemberGradeRepository.findGradesByThesis(thesisId).stream()
+                        .map(grade -> {
+                            grade.setVisibleToOthers(true);
+                            return grade;
+                        })
+                        .toList()
+        ).stream()
+                .map(committeeMemberGradeMapper::toDTO)
+                .toList();
+    }
+
+    @PreAuthorize("hasAuthority('HEAD_OF_COMMITTEE')")
+    @Transactional
+    public List<CommitteeMemberGradeDTO> hideCommitteeMemberGrades(Long thesisId) {
+        return committeeMemberGradeRepository.saveAll(
+                        committeeMemberGradeRepository.findGradesByThesis(thesisId).stream()
+                                .map(grade -> {
+                                    grade.setVisibleToOthers(false);
+                                    return grade;
+                                })
+                                .toList()
+                ).stream()
+                .map(committeeMemberGradeMapper::toDTO)
+                .toList();
+    }
+
     private void validateReviewerGrade(ReviewerGradeDTO reviewerGradeDTO) {
         return;
     }

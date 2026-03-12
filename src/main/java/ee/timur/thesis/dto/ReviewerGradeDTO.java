@@ -14,4 +14,6 @@ public class ReviewerGradeDTO {
     private String appearanceReasoning;
     private String evaluationSummary;
     private String questions;
+    private String name;
+    private String secondName;
 }

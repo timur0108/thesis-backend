@@ -12,4 +12,5 @@ public class CommitteeMemberGradeDTO {
     private Integer presentationScore;
     private String name;
     private String secondName;
+    private Boolean visibleToOthers;
 }

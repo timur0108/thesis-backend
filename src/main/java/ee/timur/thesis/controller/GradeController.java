@@ -47,4 +47,22 @@ public class GradeController {
     public CommitteeMemberGradeDTO getCommitteeMemberOwnGrade(@PathVariable Long thesisId) {
         return gradeService.getCommitteeMemberGrade(thesisId);
     }
+
+    @PreAuthorize("hasAuthority('HEAD_OF_COMMITTEE')")
+    @GetMapping("/committee-member/{thesisId}/all")
+    public List<CommitteeMemberGradeDTO> getAllCommitteeMemberGrades(@PathVariable Long thesisId) {
+        return gradeService.getAllCommitteeMemberGrades(thesisId);
+    }
+
+    @PreAuthorize("hasAuthority('HEAD_OF_COMMITTEE')")
+    @PostMapping("/make-visible/{thesisId}")
+    public List<CommitteeMemberGradeDTO> makeCommitteeMemberGradesVisible(@PathVariable Long thesisId) {
+        return gradeService.makeCommitteeMemberGradesVisible(thesisId);
+    }
+
+    @PreAuthorize("hasAuthority('HEAD_OF_COMMITTEE')")
+    @PostMapping("/hide/{thesisId}")
+    public List<CommitteeMemberGradeDTO> hideCommitteeMemberGrades(@PathVariable Long thesisId) {
+        return gradeService.hideCommitteeMemberGrades(thesisId);
+    }
 }

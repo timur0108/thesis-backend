@@ -16,5 +16,7 @@ public interface ReviewerGradeMapper {
     ReviewerGrade toEntity(ReviewerGradeDTO dto, Thesis thesis, User user);
 
     @Mapping(target = "thesisId", source = "thesis.id")
+    @Mapping(target = "name", source = "user.name")
+    @Mapping(target = "secondName", source = "user.secondName")
     ReviewerGradeDTO toDTO(ReviewerGrade reviewerGrade);
 }
