@@ -30,19 +30,19 @@ public class GradeController {
         return ResponseEntity.ok(gradeService.getReviewerGrade(thesisId));
     }
 
-    @PreAuthorize("hasAuthority('COMMITTEE_MEMBER')")
+    @PreAuthorize("hasAnyAuthority('COMMITTEE_MEMBER', 'HEAD_OF_COMMITTEE')")
     @PostMapping("/committee-member")
     public ResponseEntity<CommitteeMemberGradeDTO> submitCommitteeMemberGrade(@RequestBody CommitteeMemberGradeDTO committeeMemberGradeDTO) {
         return new ResponseEntity<>(gradeService.saveCommitteeMemberGrade(committeeMemberGradeDTO), HttpStatus.CREATED);
     }
 
-    @PreAuthorize("hasAuthority('COMMITTEE_MEMBER')")
+    @PreAuthorize("hasAnyAuthority('COMMITTEE_MEMBER', 'HEAD_OF_COMMITTEE')")
     @GetMapping("/committee-member/other-members/{thesisId}")
     public List<CommitteeMemberGradeDTO> getAllCommitteeMemberGradesOfOtherMembers(@PathVariable Long thesisId) {
         return gradeService.getAllCommitteeGradesOfOtherMembers(thesisId);
     }
 
-    @PreAuthorize("hasAuthority('COMMITTEE_MEMBER')")
+    @PreAuthorize("hasAnyAuthority('COMMITTEE_MEMBER', 'HEAD_OF_COMMITTEE')")
     @GetMapping("/committee-member/own-grade/{thesisId}")
     public CommitteeMemberGradeDTO getCommitteeMemberOwnGrade(@PathVariable Long thesisId) {
         return gradeService.getCommitteeMemberGrade(thesisId);

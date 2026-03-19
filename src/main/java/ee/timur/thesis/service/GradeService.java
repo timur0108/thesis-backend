@@ -14,6 +14,8 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -54,7 +56,7 @@ public class GradeService {
                 .orElse(null);
     }
 
-    @PreAuthorize("hasAuthority('COMMITTEE_MEMBER')")
+    @PreAuthorize("hasAnyAuthority('COMMITTEE_MEMBER', 'HEAD_OF_COMMITTEE')")
     @Transactional
     public CommitteeMemberGradeDTO saveCommitteeMemberGrade(CommitteeMemberGradeDTO committeeMemberGradeDTO) {
         validateCommitteeMemberGrade(committeeMemberGradeDTO);
@@ -74,11 +76,16 @@ public class GradeService {
                 .toList();
     }
 
-    @PreAuthorize("hasAuthority('COMMITTEE_MEMBER')")
+    @PreAuthorize("hasAnyAuthority('COMMITTEE_MEMBER', 'HEAD_OF_COMMITTEE')")
     public List<CommitteeMemberGradeDTO> getAllCommitteeGradesOfOtherMembers(Long thesisId) {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        boolean isHead = authentication.getAuthorities().stream()
+                .anyMatch(a -> a.getAuthority().equals("HEAD_OF_COMMITTEE"));
+
         Long userId = (Long) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return committeeMemberGradeRepository.findGradesByThesis(thesisId).stream()
-                .filter(CommitteeMemberGrade::getVisibleToOthers)
+                .filter(grade -> isHead || grade.getVisibleToOthers())
                 .filter(grade -> !grade.getUser().getId().equals(userId))
                 .map(committeeMemberGradeMapper::toDTO)
                 .toList();

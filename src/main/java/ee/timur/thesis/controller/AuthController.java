@@ -59,7 +59,7 @@ public class AuthController {
                 ResponseCookie.from("REFRESH_TOKEN", jwtDTO.refreshToken())
                         .httpOnly(true)
                         .path("/")
-                        .sameSite("None")
+                        .sameSite("Strict")
                         .maxAge(Duration.ofDays(7))
                         .build();
 
@@ -68,7 +68,7 @@ public class AuthController {
         ResponseCookie accessTokenCookie = ResponseCookie.from("ACCESS_TOKEN", jwtDTO.accessToken())
                 .httpOnly(true)
                 .path("/")
-                .sameSite("None")
+                .sameSite("strict")
                 .maxAge(Duration.ofMinutes(15))
                 .build();
 
