@@ -102,6 +102,7 @@ public class GradeService {
     @PreAuthorize("hasAuthority('HEAD_OF_COMMITTEE')")
     @Transactional
     public List<CommitteeMemberGradeDTO> makeCommitteeMemberGradesVisible(Long thesisId) {
+        Long userId = (Long) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return committeeMemberGradeRepository.saveAll(
                 committeeMemberGradeRepository.findGradesByThesis(thesisId).stream()
                         .map(grade -> {
@@ -110,6 +111,7 @@ public class GradeService {
                         })
                         .toList()
         ).stream()
+                .filter(grade -> !grade.getUser().getId().equals(userId))
                 .map(committeeMemberGradeMapper::toDTO)
                 .toList();
     }
@@ -117,6 +119,7 @@ public class GradeService {
     @PreAuthorize("hasAuthority('HEAD_OF_COMMITTEE')")
     @Transactional
     public List<CommitteeMemberGradeDTO> hideCommitteeMemberGrades(Long thesisId) {
+        Long userId = (Long) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return committeeMemberGradeRepository.saveAll(
                         committeeMemberGradeRepository.findGradesByThesis(thesisId).stream()
                                 .map(grade -> {
@@ -125,6 +128,7 @@ public class GradeService {
                                 })
                                 .toList()
                 ).stream()
+                .filter(grade -> !grade.getUser().getId().equals(userId))
                 .map(committeeMemberGradeMapper::toDTO)
                 .toList();
     }

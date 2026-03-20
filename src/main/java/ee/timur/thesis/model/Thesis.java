@@ -36,6 +36,10 @@ public class Thesis {
     private String levelOfStudies;
 
     @NotNull
+    @Column(name = "curriculum")
+    private String curriculum;
+
+    @NotNull
     @Column(name = "language_of_thesis")
     private String languageOfThesis;
 
@@ -50,15 +54,4 @@ public class Thesis {
     @NotNull
     @Column(name = "title_english")
     private String titleEnglish;
-
-    @OneToMany(
-        mappedBy = "thesis",
-        fetch = FetchType.LAZY,
-        cascade = CascadeType.REMOVE
-    )
-    private List<ReviewerGrade> reviewerGrades;
-
-    @NotNull
-    @Column(name = "created_at")
-    private LocalDateTime createdAt;
 }

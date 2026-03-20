@@ -1,8 +1,10 @@
 package ee.timur.thesis.controller;
 
+import ee.timur.thesis.dto.ThesisCreateDTO;
 import ee.timur.thesis.dto.ThesisDTO;
 import ee.timur.thesis.service.ThesisService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -10,7 +12,6 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("api/thesis")
-@CrossOrigin(origins = "http://localhost:4200")
 public class ThesisController {
 
     private final ThesisService thesisService;
@@ -24,5 +25,11 @@ public class ThesisController {
     @GetMapping("/{id}")
     ThesisDTO getById(@PathVariable Long id) {
         return thesisService.getThesisById(id);
+    }
+
+    @PostMapping
+    public ResponseEntity<Void> createThesis(@RequestBody ThesisCreateDTO dto) {
+        thesisService.createThesis(dto);
+        return ResponseEntity.ok().build();
     }
 }
