@@ -16,4 +16,9 @@ public class FinalGradeController {
     public FinalGradeDTO submitFinalGrade(@RequestBody FinalGradeDTO dto) {
         return finalGradeService.saveFinalGrade(dto);
     }
+
+    @GetMapping("/{thesisId}")
+    public FinalGradeDTO getFinalGrade(@PathVariable Long thesisId) {
+        return finalGradeService.getFinalGrade(thesisId);
+    }
 }
