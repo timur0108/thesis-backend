@@ -24,6 +24,12 @@ public class GradeController {
         return new ResponseEntity<>(gradeService.saveReviewerGrade(reviewerGradeDTO), HttpStatus.CREATED);
     }
 
+    @PutMapping("/committee-member")
+    @PreAuthorize("hasAnyAuthority('COMMITTEE_MEMBER', 'HEAD_OF_COMMITTEE')")
+    public ResponseEntity<CommitteeMemberGradeDTO> updateCommitteeMemberGrade(@RequestBody CommitteeMemberGradeDTO dto) {
+        CommitteeMemberGradeDTO res = gradeService.updateCommitteeMemberGrade(dto);
+        return new ResponseEntity<>(res, HttpStatus.OK);
+    }
 
     @GetMapping("/reviewer/{thesisId}")
     public ResponseEntity<ReviewerGradeDTO> getReviewerGrade(@PathVariable Long thesisId) {

@@ -47,6 +47,21 @@ public class GradeService {
         return reviewerGradeMapper.toDTO(reviewerGradeRepository.save(reviewerGrade));
     }
 
+    @PreAuthorize("hasAnyAuthority('COMMITTEE_MEMBER', 'HEAD_OF_COMMITTEE')")
+    @Transactional
+    public CommitteeMemberGradeDTO updateCommitteeMemberGrade(CommitteeMemberGradeDTO dto) {
+        Long userId = (Long) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        CommitteeMemberGrade existingGrade = committeeMemberGradeRepository
+                .findGradeByThesisAndUser(dto.getThesisId(), userId)
+                .orElseThrow();
+
+        existingGrade.setAppearanceScore(dto.getAppearanceScore());
+        existingGrade.setPresentationScore(dto.getPresentationScore());
+        existingGrade.setComplexityScore(dto.getComplexityScore());
+        existingGrade.setContentScore(dto.getContentScore());
+
+        return committeeMemberGradeMapper.toDTO(committeeMemberGradeRepository.save(existingGrade));
+    }
 
     public ReviewerGradeDTO getReviewerGrade(Long thesisId) {
         Long userId = (Long) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
