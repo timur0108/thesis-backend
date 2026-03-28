@@ -1,4 +1,5 @@
 DROP TABLE IF EXISTS reviewer_grade;
+DROP TABLE IF EXISTS final_grade;
 DROP TABLE IF EXISTS committee_member_grade;
 DROP TABLE IF EXISTS supervisor_form;
 DROP TABLE IF EXISTS "user";
@@ -110,4 +111,24 @@ CREATE TABLE supervisor_form(
                                         REFERENCES "user"(id),
 
                                 CONSTRAINT supervisor_form_uq_user_thesis UNIQUE (user_id, thesis_id)
+);
+
+CREATE TABLE final_grade(
+                                        id BIGSERIAL PRIMARY KEY,
+
+                                        content_score INTEGER NOT NULL,
+
+                                        complexity_score INTEGER NOT NULL,
+                                        appearance_score INTEGER NOT NULL,
+                                        presentation_score INTEGER NOT NULL,
+                                        total_score INTEGER NOT NULL,
+                                        letter_grade VARCHAR(1) CHECK (letter_grade IN ('A','B','C','D','E','F')),
+                                        thesis_id BIGINT,
+                                        CONSTRAINT fk_final_grade_thesis
+                                            FOREIGN KEY (thesis_id)
+                                                REFERENCES thesis(id),
+
+
+
+                                        CONSTRAINT uq_final_grade UNIQUE (thesis_id)
 );
