@@ -48,7 +48,7 @@ public class GradeController {
         return gradeService.getCommitteeMemberGrade(thesisId);
     }
 
-    @PreAuthorize("hasAuthority('HEAD_OF_COMMITTEE')")
+    @PreAuthorize("hasAnyAuthority('HEAD_OF_COMMITTEE', 'REVIEWER', 'SUPERVISOR')")
     @GetMapping("/committee-member/{thesisId}/all")
     public List<CommitteeMemberGradeDTO> getAllCommitteeMemberGrades(@PathVariable Long thesisId) {
         return gradeService.getAllCommitteeMemberGrades(thesisId);

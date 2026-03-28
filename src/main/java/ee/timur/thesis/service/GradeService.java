@@ -69,7 +69,7 @@ public class GradeService {
         return committeeMemberGradeMapper.toDTO(committeeMemberGradeRepository.save(committeeMemberGrade));
     }
 
-    @PreAuthorize("hasAuthority('HEAD_OF_COMMITTEE')")
+    @PreAuthorize("hasAnyAuthority('HEAD_OF_COMMITTEE', 'REVIEWER', 'SUPERVISOR')")
     public List<CommitteeMemberGradeDTO> getAllCommitteeMemberGrades(Long thesisId) {
         return committeeMemberGradeRepository.findGradesByThesis(thesisId).stream()
                 .map(committeeMemberGradeMapper::toDTO)

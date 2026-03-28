@@ -110,3 +110,74 @@ INSERT INTO committee_member_grade (
              2,
           true
          );
+
+INSERT INTO supervisor_form (
+    context_of_research,
+    student_contribution,
+    strength_of_thesis,
+    limitation_of_thesis,
+    cooperation,
+    additional_comments,
+    thesis_id,
+    user_id
+) VALUES
+
+-- Thesis 1
+(
+    'The research focuses on building a scalable web application using microservices architecture.',
+    'The student independently implemented multiple services and handled communication between them.',
+    'Strong practical implementation and clear architectural decisions.',
+    'Limited discussion on distributed transactions and fault tolerance.',
+    'Very good cooperation, student was proactive and responsive.',
+    'Overall a strong thesis with good real-world applicability.',
+    1,
+    6
+),
+
+-- Thesis 2
+(
+    'The thesis explores optimization techniques for machine learning models in big data environments.',
+    'The student conducted experiments and compared multiple optimization strategies.',
+    'Excellent analytical work and strong theoretical foundation.',
+    'Could include more real-world datasets for validation.',
+    'Smooth and professional cooperation throughout the process.',
+    'A very well-executed master-level thesis.',
+    2,
+    6
+),
+
+-- Thesis 3
+(
+    'The research investigates secure authentication mechanisms using JWT in Spring Boot.',
+    'The student developed a secure authentication system and implemented token management.',
+    'Clear implementation and strong understanding of security concepts.',
+    'Limited exploration of alternative authentication methods.',
+    'Good communication and timely progress updates.',
+    'A solid and practical thesis.',
+    3,
+    6
+),
+
+-- Thesis 4
+(
+    'The thesis analyzes scalability challenges in cloud-based e-commerce platforms.',
+    'The student designed and tested scalable infrastructure solutions.',
+    'Strong system design and performance evaluation.',
+    'Could improve documentation clarity in some sections.',
+    'Very good collaboration and initiative.',
+    'Demonstrates strong engineering skills.',
+    4,
+    6
+),
+
+-- Thesis 5
+(
+    'The research focuses on database performance optimization in PostgreSQL.',
+    'The student performed benchmarking and applied optimization techniques.',
+    'Good experimental work and practical insights.',
+    'Limited coverage of distributed database systems.',
+    'Consistent and reliable cooperation.',
+    'A well-structured and useful thesis.',
+    5,
+    6
+);
