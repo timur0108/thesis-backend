@@ -1,17 +1,13 @@
-# Use OpenJDK 21 base image (matches your Java version)
-FROM eclipse-temurin:21-jdk-jammy
-
-# Set environment variables (optional)
-ENV JAVA_OPTS=""
-
-# Set working directory in container
+# Stage 1: Build the JAR
+FROM maven:3.9.1-eclipse-temurin-21 AS build
 WORKDIR /app
+COPY pom.xml .
+COPY src ./src
+RUN mvn clean package -DskipTests
 
-# Copy the Spring Boot fat JAR into the container
-COPY target/myapp.jar app.jar
-
-# Expose the port your app runs on (default 8080)
+# Stage 2: Run the app
+FROM eclipse-temurin:21-jdk-jammy
+WORKDIR /app
+COPY --from=build /app/target/*.jar app.jar
 EXPOSE 8080
-
-# Run the Spring Boot app
-ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS -jar app.jar"]
+ENTRYPOINT ["java","-jar","app.jar"]
