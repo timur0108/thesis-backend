@@ -1,5 +1,5 @@
 # Stage 1: Build the JAR using Gradle
-FROM gradle:8.3.3-jdk21 AS build
+FROM gradle:8.4-jdk21 AS build
 WORKDIR /app
 
 # Copy Gradle wrapper and build files
