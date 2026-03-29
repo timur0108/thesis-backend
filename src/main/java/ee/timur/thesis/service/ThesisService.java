@@ -24,7 +24,7 @@ public class ThesisService {
     private final UserRepository userRepository;
 
     public List<ThesisDTO> getAllThesises() {
-        return thesisRepository.findAll().stream().map(thesisMapper::toDTO).toList();
+        return thesisRepository.findAllWithFinalGrade().stream().map(thesisMapper::toDTO).toList();
     }
 
     public ThesisDTO getThesisById(Long id) {

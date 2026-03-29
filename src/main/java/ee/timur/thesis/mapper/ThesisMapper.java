@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 @Mapper(componentModel = "spring")
 public interface ThesisMapper {
 
+    @Mapping(target = "finalGrade", source = "finalGrade.letterGrade")
     ThesisDTO toDTO(Thesis thesis);
 
     @Mapping(target = "id", ignore = true)

@@ -13,4 +13,5 @@ public class ThesisDTO {
     private String titleEstonian;
     private String titleEnglish;
     private String supervisorName;
+    private String finalGrade;
 }

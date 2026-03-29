@@ -54,4 +54,7 @@ public class Thesis {
     @NotNull
     @Column(name = "title_english")
     private String titleEnglish;
+
+    @OneToOne(mappedBy = "thesis", fetch = FetchType.LAZY)
+    private FinalGrade finalGrade;
 }
