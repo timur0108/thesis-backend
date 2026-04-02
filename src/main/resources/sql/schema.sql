@@ -5,6 +5,13 @@ DROP TABLE IF EXISTS supervisor_form;
 DROP TABLE IF EXISTS "user";
 DROP TABLE IF EXISTS "role";
 DROP TABLE IF EXISTS thesis;
+DROP TABLE IF EXISTS "session";
+
+CREATE TABLE IF NOT EXISTS "session" (
+    id BIGSERIAL PRIMARY KEY,
+    start_date DATE,
+    end_date DATE
+);
 
 CREATE TABLE IF NOT EXISTS thesis (
     id BIGSERIAL PRIMARY KEY,
@@ -15,7 +22,11 @@ CREATE TABLE IF NOT EXISTS thesis (
     language_of_thesis VARCHAR(50) NOT NULL,
     volume_ects INTEGER NOT NULL CHECK (volume_ects > 0),
     title_estonian TEXT NOT NULL,
-    title_english TEXT NOT NULL
+    title_english TEXT NOT NULL,
+    session_id BIGINT,
+    CONSTRAINT fk_thesis_session
+    FOREIGN KEY (session_id)
+    REFERENCES "session"(id)
 );
 
 CREATE TABLE IF NOT EXISTS "role" (

@@ -1,3 +1,10 @@
+
+INSERT INTO "session" (start_date, end_date) VALUES
+                                                 ('2024-01-01', '2024-06-30'),  -- session_id = 1
+                                                 ('2024-09-01', '2024-12-20');  -- session_id = 2
+
+
+
 -- =========================
 -- INSERT ROLES
 -- =========================
@@ -5,7 +12,8 @@ INSERT INTO "role" (role_name) VALUES
                                    ('COMMITTEE_MEMBER'),
                                    ('HEAD_OF_COMMITTEE'),
                                    ('REVIEWER'),
-                                   ('SUPERVISOR');
+                                   ('SUPERVISOR'),
+                                   ('ADMIN');
 
 -- =========================
 -- INSERT USERS
@@ -15,7 +23,7 @@ INSERT INTO "user" (name, second_name, email, password, role_id) VALUES
                                                                      ('Mari', 'Kask', 'mari.kask@university.ee', '$2a$10$WXufcyCXcMrs.sOGq/nsIeosdQG6/qJiQHVc0utq8i2KcaEb2MS1u', 1),
                                                                      ('Peeter', 'Saar', 'peeter.saar@university.ee', '$2a$10$WXufcyCXcMrs.sOGq/nsIeosdQG6/qJiQHVc0utq8i2KcaEb2MS1u', 2),
                                                                          ('Katrin', 'Mägi', 'katrin.magi@university.ee', '$2a$10$WXufcyCXcMrs.sOGq/nsIeosdQG6/qJiQHVc0utq8i2KcaEb2MS1u', 3),
-                                                                     ('Timur', 'Sirazitdinov', 'timur.sirazitdinov@gmail.com', '$2a$10$WXufcyCXcMrs.sOGq/nsIeosdQG6/qJiQHVc0utq8i2KcaEb2MS1u', 1),
+                                                                     ('Timur', 'Sirazitdinov', 'timur.sirazitdinov@gmail.com', '$2a$10$WXufcyCXcMrs.sOGq/nsIeosdQG6/qJiQHVc0utq8i2KcaEb2MS1u', 5),
                                                                      ('Helena', 'Kuusk', 'helena.kuusk@university.ee', '$2a$10$WXufcyCXcMrs.sOGq/nsIeosdQG6/qJiQHVc0utq8i2KcaEb2MS1u', 4);
 -- =========================
 -- INSERT THESIS
@@ -28,27 +36,61 @@ INSERT INTO thesis (
     language_of_thesis,
     volume_ects,
     title_estonian,
-    title_english
+    title_english,
+    session_id
 ) VALUES
-      ('Karl Tamm', 'Dr. Andres Kalda', 'ASDASD', 'Bachelor', 'Estonian', 6,
-       'Veebirakenduse arendus mikroteenuste arhitektuuriga',
-       'Development of a Web Application Using Microservices Architecture'),
+-- ===== SESSION 1 =====
+('Karl Tamm', 'Dr. Andres Kalda', 'ASDASD', 'Bachelor', 'Estonian', 6,
+ 'Veebirakenduse arendus mikroteenuste arhitektuuriga',
+ 'Development of a Web Application Using Microservices Architecture',
+ 1),
 
-      ('Maria Kask', 'Prof. Liina Vaher', 'AAAA', 'Master', 'English', 30,
-       'Masinõppe mudelite optimeerimine suurandmete töötlemisel',
-       'Optimization of Machine Learning Models for Big Data Processing'),
+('Maria Kask', 'Prof. Liina Vaher', 'AAAA', 'Master', 'English', 30,
+ 'Masinõppe mudelite optimeerimine suurandmete töötlemisel',
+ 'Optimization of Machine Learning Models for Big Data Processing',
+ 1),
 
-      ('Jaan Saar', 'Dr. Peeter Põder', 'A3131', 'Bachelor', 'English', 12,
-       'Turvaline autentimine JWT abil Spring Boot rakendustes',
-       'Secure Authentication Using JWT in Spring Boot Applications'),
+('Jaan Saar', 'Dr. Peeter Põder', 'A3131', 'Bachelor', 'English', 12,
+ 'Turvaline autentimine JWT abil Spring Boot rakendustes',
+ 'Secure Authentication Using JWT in Spring Boot Applications',
+ 1),
 
-      ('Liis Mägi', 'Prof. Tiina Mets', 'pppd', 'Master', 'Estonian', 24,
-       'Pilvepõhise e-kaubanduse platvormi skaleeritavus',
-       'Scalability of a Cloud-Based E-Commerce Platform'),
+('Liis Mägi', 'Prof. Tiina Mets', 'PPPD', 'Master', 'Estonian', 24,
+ 'Pilvepõhise e-kaubanduse platvormi skaleeritavus',
+ 'Scalability of a Cloud-Based E-Commerce Platform',
+ 1),
 
-      ('Rasmus Põld', 'Dr. Martin Kuusk', 'djkjj', 'Bachelor', 'Estonian', 6,
-       'Andmebaasi jõudluse analüüs ja optimeerimine PostgreSQL-is',
-       'Database Performance Analysis and Optimization in PostgreSQL');
+('Rasmus Põld', 'Dr. Martin Kuusk', 'DJKJJ', 'Bachelor', 'Estonian', 6,
+ 'Andmebaasi jõudluse analüüs ja optimeerimine PostgreSQL-is',
+ 'Database Performance Analysis and Optimization in PostgreSQL',
+ 1),
+
+-- ===== SESSION 2 =====
+('Helen Kask', 'Dr. Maarja Pärt', 'IT-2024', 'Bachelor', 'Estonian', 6,
+ 'Reaalajas andmetöötlus Node.js abil',
+ 'Real-Time Data Processing Using Node.js',
+ 2),
+
+('Marko Vaher', 'Prof. Jüri Parts', 'CS-MA', 'Master', 'English', 30,
+ 'Neuraalvõrkude tõlgendatavus meditsiinis',
+ 'Interpretability of Neural Networks in Medical Diagnostics',
+ 2),
+
+('Sandra Kuusk', 'Dr. Kalle Tamm', 'INF-BA', 'Bachelor', 'English', 12,
+ 'Andmeturve pilvepõhistes süsteemides',
+ 'Data Security in Cloud-Based Systems',
+ 2),
+
+('Oliver Põder', 'Prof. Tiit Mets', 'CS-MA', 'Master', 'Estonian', 24,
+ 'Masinõppe mudelite efektiivne treenimine GPU-del',
+ 'Efficient Training of Machine Learning Models on GPUs',
+ 2),
+
+('Grete Saar', 'Dr. Annika Vaher', 'IT-2024', 'Bachelor', 'English', 6,
+ 'Veebirakenduste testimise automatiseerimine',
+ 'Automated Testing of Web Applications',
+ 2);
+
 
 INSERT INTO reviewer_grade (
     content_score,
