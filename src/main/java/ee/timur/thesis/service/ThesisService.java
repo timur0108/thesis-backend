@@ -12,7 +12,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -28,9 +31,18 @@ public class ThesisService {
     }
 
     public ThesisDTO getThesisById(Long id) {
-        return thesisMapper.toDTO(
-                thesisRepository.findById(id).orElseThrow()
-        );
+        ThesisDTO thesis =
+                thesisMapper.toDTO(thesisRepository.findById(id).orElseThrow());
+        Long userId = (Long) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        List<String> thesisRoles = thesisRepository.getRolesFromThesis(thesis.getId(), userId);
+        List<String> sessionRoles = thesisRepository.getRolesFromSession(thesis.getId(), userId);
+
+        Set<String> allRoles = new HashSet<>();
+        allRoles.addAll(thesisRoles);
+        allRoles.addAll(sessionRoles);
+
+        thesis.setRoles(new ArrayList<>(allRoles));
+        return thesis;
     }
 
     @Transactional
@@ -38,8 +50,84 @@ public class ThesisService {
         Thesis thesis = thesisMapper.toEntity(dto);
         Long userId = (Long) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = userRepository.findById(userId).orElseThrow();
-        thesis.setSupervisorName(user.getName() + " " + user.getSecondName());
+
         thesis = thesisRepository.save(thesis);
         supervisorFormService.saveSupervisorForm(dto, thesis);
+    }
+
+    public List<ThesisDTO> getAllAssigned() {
+        Long userId = (Long) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return thesisRepository.findAllAssigned(userId).stream()
+                .map(thesisMapper::toDTO)
+                .map(thesis -> {
+                    List<String> thesisRoles = thesisRepository.getRolesFromThesis(thesis.getId(), userId);
+                    List<String> sessionRoles = thesisRepository.getRolesFromSession(thesis.getId(), userId);
+
+                    Set<String> allRoles = new HashSet<>();
+                    allRoles.addAll(thesisRoles);
+                    allRoles.addAll(sessionRoles);
+
+                    thesis.setRoles(new ArrayList<>(allRoles));
+
+                    return thesis;
+                })
+                .toList();
+    }
+
+    public List<ThesisDTO> getSupervised() {
+        Long userId = (Long) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return thesisRepository.findSupervised(userId).stream()
+                .map(thesisMapper::toDTO)
+                .map(thesis -> {
+                    List<String> thesisRoles = thesisRepository.getRolesFromThesis(thesis.getId(), userId);
+                    List<String> sessionRoles = thesisRepository.getRolesFromSession(thesis.getId(), userId);
+
+                    Set<String> allRoles = new HashSet<>();
+                    allRoles.addAll(thesisRoles);
+                    allRoles.addAll(sessionRoles);
+
+                    thesis.setRoles(new ArrayList<>(allRoles));
+
+                    return thesis;
+                })
+                .toList();
+    }
+
+    public List<ThesisDTO> getAssignedReviews() {
+        Long userId = (Long) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return thesisRepository.findAssigendReviews(userId).stream()
+                .map(thesisMapper::toDTO)
+                .map(thesis -> {
+                    List<String> thesisRoles = thesisRepository.getRolesFromThesis(thesis.getId(), userId);
+                    List<String> sessionRoles = thesisRepository.getRolesFromSession(thesis.getId(), userId);
+
+                    Set<String> allRoles = new HashSet<>();
+                    allRoles.addAll(thesisRoles);
+                    allRoles.addAll(sessionRoles);
+
+                    thesis.setRoles(new ArrayList<>(allRoles));
+
+                    return thesis;
+                })
+                .toList();
+    }
+
+    public List<ThesisDTO> getCommittee() {
+        Long userId = (Long) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return thesisRepository.findCommitteeMemberOrHead(userId).stream()
+                .map(thesisMapper::toDTO)
+                .map(thesis -> {
+                    List<String> thesisRoles = thesisRepository.getRolesFromThesis(thesis.getId(), userId);
+                    List<String> sessionRoles = thesisRepository.getRolesFromSession(thesis.getId(), userId);
+
+                    Set<String> allRoles = new HashSet<>();
+                    allRoles.addAll(thesisRoles);
+                    allRoles.addAll(sessionRoles);
+
+                    thesis.setRoles(new ArrayList<>(allRoles));
+
+                    return thesis;
+                })
+                .toList();
     }
 }

@@ -1,3 +1,5 @@
+DROP TABLE IF EXISTS session_user_role;
+DROP TABLE IF EXISTS thesis_user_role ;
 DROP TABLE IF EXISTS reviewer_grade;
 DROP TABLE IF EXISTS final_grade;
 DROP TABLE IF EXISTS committee_member_grade;
@@ -16,7 +18,6 @@ CREATE TABLE IF NOT EXISTS "session" (
 CREATE TABLE IF NOT EXISTS thesis (
     id BIGSERIAL PRIMARY KEY,
     student_name VARCHAR(255) NOT NULL,
-    supervisor_name VARCHAR(255) NOT NULL,
     curriculum VARCHAR(255) NOT NULL,
     level_of_studies VARCHAR(50) NOT NULL,
     language_of_thesis VARCHAR(50) NOT NULL,
@@ -28,6 +29,8 @@ CREATE TABLE IF NOT EXISTS thesis (
     FOREIGN KEY (session_id)
     REFERENCES "session"(id)
 );
+
+
 
 CREATE TABLE IF NOT EXISTS "role" (
                                       id BIGSERIAL PRIMARY KEY,
@@ -41,10 +44,46 @@ CREATE TABLE IF NOT EXISTS "user" (
     email VARCHAR(255) UNIQUE NOT NULL,
     password VARCHAR(255) NOT NULL,
     role_id BIGINT,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    CONSTRAINT fk_user_role
-    FOREIGN KEY (role_id)
-    REFERENCES "role"(id)
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+
+);
+
+CREATE TABLE session_user_role (
+                                   id BIGSERIAL PRIMARY KEY,
+
+                                   session_id BIGINT NOT NULL,
+                                   user_id BIGINT NOT NULL,
+                                   role_id BIGINT NOT NULL,
+
+                                   CONSTRAINT fk_sur_session FOREIGN KEY (session_id)
+                                       REFERENCES "session"(id),
+
+                                   CONSTRAINT fk_sur_user FOREIGN KEY (user_id)
+                                       REFERENCES "user"(id),
+
+                                   CONSTRAINT fk_sur_role FOREIGN KEY (role_id)
+                                       REFERENCES role(id),
+
+                                   CONSTRAINT uq_session_user_role UNIQUE (session_id, user_id, role_id)
+);
+
+CREATE TABLE thesis_user_role (
+                                  id BIGSERIAL PRIMARY KEY,
+
+                                  thesis_id BIGINT NOT NULL,
+                                  user_id BIGINT NOT NULL,
+                                  role_id BIGINT NOT NULL,
+
+                                  CONSTRAINT fk_tur_thesis FOREIGN KEY (thesis_id)
+                                      REFERENCES thesis(id),
+
+                                  CONSTRAINT fk_tur_user FOREIGN KEY (user_id)
+                                      REFERENCES "user"(id),
+
+                                  CONSTRAINT fk_tur_role FOREIGN KEY (role_id)
+                                      REFERENCES role(id),
+
+                                  CONSTRAINT uq_thesis_user_role UNIQUE (thesis_id, user_id, role_id)
 );
 
 CREATE TABLE reviewer_grade (

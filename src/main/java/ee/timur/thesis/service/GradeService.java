@@ -34,7 +34,7 @@ public class GradeService {
     @PersistenceContext
     private final EntityManager entityManager;
 
-    @PreAuthorize("hasAuthority('REVIEWER')")
+
     @Transactional
     public ReviewerGradeDTO saveReviewerGrade(ReviewerGradeDTO reviewerGradeDTO) {
         validateReviewerGrade(reviewerGradeDTO);
@@ -47,7 +47,7 @@ public class GradeService {
         return reviewerGradeMapper.toDTO(reviewerGradeRepository.save(reviewerGrade));
     }
 
-    @PreAuthorize("hasAnyAuthority('COMMITTEE_MEMBER', 'HEAD_OF_COMMITTEE')")
+
     @Transactional
     public CommitteeMemberGradeDTO updateCommitteeMemberGrade(CommitteeMemberGradeDTO dto) {
         Long userId = (Long) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -71,7 +71,7 @@ public class GradeService {
                 .orElse(null);
     }
 
-    @PreAuthorize("hasAnyAuthority('COMMITTEE_MEMBER', 'HEAD_OF_COMMITTEE')")
+
     @Transactional
     public CommitteeMemberGradeDTO saveCommitteeMemberGrade(CommitteeMemberGradeDTO committeeMemberGradeDTO) {
         validateCommitteeMemberGrade(committeeMemberGradeDTO);
@@ -84,14 +84,14 @@ public class GradeService {
         return committeeMemberGradeMapper.toDTO(committeeMemberGradeRepository.save(committeeMemberGrade));
     }
 
-    @PreAuthorize("hasAnyAuthority('HEAD_OF_COMMITTEE', 'REVIEWER', 'SUPERVISOR')")
+
     public List<CommitteeMemberGradeDTO> getAllCommitteeMemberGrades(Long thesisId) {
         return committeeMemberGradeRepository.findGradesByThesis(thesisId).stream()
                 .map(committeeMemberGradeMapper::toDTO)
                 .toList();
     }
 
-    @PreAuthorize("hasAnyAuthority('COMMITTEE_MEMBER', 'HEAD_OF_COMMITTEE')")
+
     public List<CommitteeMemberGradeDTO> getAllCommitteeGradesOfOtherMembers(Long thesisId) {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -114,7 +114,7 @@ public class GradeService {
                 .orElse(null);
     }
 
-    @PreAuthorize("hasAuthority('HEAD_OF_COMMITTEE')")
+
     @Transactional
     public List<CommitteeMemberGradeDTO> makeCommitteeMemberGradesVisible(Long thesisId) {
         Long userId = (Long) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -131,7 +131,7 @@ public class GradeService {
                 .toList();
     }
 
-    @PreAuthorize("hasAuthority('HEAD_OF_COMMITTEE')")
+
     @Transactional
     public List<CommitteeMemberGradeDTO> hideCommitteeMemberGrades(Long thesisId) {
         Long userId = (Long) SecurityContextHolder.getContext().getAuthentication().getPrincipal();

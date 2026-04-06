@@ -18,14 +18,13 @@ public class GradeController {
 
     private final GradeService gradeService;
 
-    @PreAuthorize("hasAuthority('REVIEWER')")
+
     @PostMapping("/reviewer")
     public ResponseEntity<ReviewerGradeDTO> submitReviewerGrade(@RequestBody ReviewerGradeDTO reviewerGradeDTO) {
         return new ResponseEntity<>(gradeService.saveReviewerGrade(reviewerGradeDTO), HttpStatus.CREATED);
     }
 
     @PutMapping("/committee-member")
-    @PreAuthorize("hasAnyAuthority('COMMITTEE_MEMBER', 'HEAD_OF_COMMITTEE')")
     public ResponseEntity<CommitteeMemberGradeDTO> updateCommitteeMemberGrade(@RequestBody CommitteeMemberGradeDTO dto) {
         CommitteeMemberGradeDTO res = gradeService.updateCommitteeMemberGrade(dto);
         return new ResponseEntity<>(res, HttpStatus.OK);
@@ -36,37 +35,36 @@ public class GradeController {
         return ResponseEntity.ok(gradeService.getReviewerGrade(thesisId));
     }
 
-    @PreAuthorize("hasAnyAuthority('COMMITTEE_MEMBER', 'HEAD_OF_COMMITTEE')")
     @PostMapping("/committee-member")
     public ResponseEntity<CommitteeMemberGradeDTO> submitCommitteeMemberGrade(@RequestBody CommitteeMemberGradeDTO committeeMemberGradeDTO) {
         return new ResponseEntity<>(gradeService.saveCommitteeMemberGrade(committeeMemberGradeDTO), HttpStatus.CREATED);
     }
 
-    @PreAuthorize("hasAnyAuthority('COMMITTEE_MEMBER', 'HEAD_OF_COMMITTEE')")
+
     @GetMapping("/committee-member/other-members/{thesisId}")
     public List<CommitteeMemberGradeDTO> getAllCommitteeMemberGradesOfOtherMembers(@PathVariable Long thesisId) {
         return gradeService.getAllCommitteeGradesOfOtherMembers(thesisId);
     }
 
-    @PreAuthorize("hasAnyAuthority('COMMITTEE_MEMBER', 'HEAD_OF_COMMITTEE')")
+
     @GetMapping("/committee-member/own-grade/{thesisId}")
     public CommitteeMemberGradeDTO getCommitteeMemberOwnGrade(@PathVariable Long thesisId) {
         return gradeService.getCommitteeMemberGrade(thesisId);
     }
 
-    @PreAuthorize("hasAnyAuthority('HEAD_OF_COMMITTEE', 'REVIEWER', 'SUPERVISOR')")
+
     @GetMapping("/committee-member/{thesisId}/all")
     public List<CommitteeMemberGradeDTO> getAllCommitteeMemberGrades(@PathVariable Long thesisId) {
         return gradeService.getAllCommitteeMemberGrades(thesisId);
     }
 
-    @PreAuthorize("hasAuthority('HEAD_OF_COMMITTEE')")
+
     @PostMapping("/make-visible/{thesisId}")
     public List<CommitteeMemberGradeDTO> makeCommitteeMemberGradesVisible(@PathVariable Long thesisId) {
         return gradeService.makeCommitteeMemberGradesVisible(thesisId);
     }
 
-    @PreAuthorize("hasAuthority('HEAD_OF_COMMITTEE')")
+
     @PostMapping("/hide/{thesisId}")
     public List<CommitteeMemberGradeDTO> hideCommitteeMemberGrades(@PathVariable Long thesisId) {
         return gradeService.hideCommitteeMemberGrades(thesisId);

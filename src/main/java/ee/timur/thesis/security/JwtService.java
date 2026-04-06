@@ -46,13 +46,13 @@ public class JwtService {
     }
 
     public String generateAccessToken(User user) {
-        String role = user.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList().getFirst();
+
         String username = user.getEmail();
         return Jwts.builder()
                 .claims()
                 .subject(username)
                 .add("type", "access")
-                .add("role", role)
+                .add("email", user.getEmail())
                 .add("userId", user.getId())
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 15))
@@ -92,10 +92,6 @@ public class JwtService {
 
     public String extractName(String token) {
         return extractClaim(token, Claims::getSubject);
-    }
-
-    public String extractRole(String token) {
-        return extractClaim(token, claims -> claims.get("role", String.class));
     }
 
     public Long extractUserId(String token) {

@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Table(name = "\"session\"")
@@ -25,4 +26,10 @@ public class Session {
 
     @Column(name = "end_date")
     private LocalDate endDate;
+
+    @OneToMany(mappedBy = "session", fetch = FetchType.LAZY)
+    private List<Thesis> theses;
+
+    @OneToMany(mappedBy = "session")
+    private List<SessionUserRole> sessionUserRoles;
 }

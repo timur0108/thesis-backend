@@ -28,10 +28,6 @@ public class Thesis {
     private String studentName;
 
     @NotNull
-    @Column(name = "supervisor_name")
-    private String supervisorName;
-
-    @NotNull
     @Column(name = "level_of_studies")
     private String levelOfStudies;
 
@@ -54,6 +50,14 @@ public class Thesis {
     @NotNull
     @Column(name = "title_english")
     private String titleEnglish;
+
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "session_id")
+    private Session session;
+
+    @OneToMany(mappedBy = "thesis", fetch = FetchType.LAZY)
+    private List<ThesisUserRole> thesisUserRoles;
 
     @OneToOne(mappedBy = "thesis", fetch = FetchType.LAZY)
     private FinalGrade finalGrade;

@@ -53,10 +53,10 @@ public class JwtFilter extends OncePerRequestFilter {
                 return;
             }
             if (SecurityContextHolder.getContext().getAuthentication() == null) {
-                GrantedAuthority role = new SimpleGrantedAuthority(jwtService.extractRole(accessToken));
+
                 UsernamePasswordAuthenticationToken auth =
                         new UsernamePasswordAuthenticationToken(
-                                jwtService.extractUserId(accessToken), null, List.of(role));
+                                jwtService.extractUserId(accessToken), null, null);
                 auth.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(auth);
             }

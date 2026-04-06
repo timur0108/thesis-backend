@@ -2,6 +2,9 @@ package ee.timur.thesis.dto;
 
 import lombok.Data;
 
+import java.time.LocalDate;
+import java.util.List;
+
 @Data
 public class ThesisDTO {
 
@@ -12,6 +15,10 @@ public class ThesisDTO {
     private Integer volumeEcts;
     private String titleEstonian;
     private String titleEnglish;
-    private String supervisorName;
-    private String finalGrade;
+    private String finalGradeLetter;
+    private Integer finalGradeNumber;
+    private List<String> roles;
+    private Long sessionId;
+    private LocalDate sessionStartDate;
+    private LocalDate sessionEndDate;
 }
