@@ -24,10 +24,6 @@ public class Thesis {
     private Long id;
 
     @NotNull
-    @Column(name = "student_name")
-    private String studentName;
-
-    @NotNull
     @Column(name = "level_of_studies")
     private String levelOfStudies;
 
@@ -55,6 +51,10 @@ public class Thesis {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "session_id")
     private Session session;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "student_id")
+    private Student student;
 
     @OneToMany(mappedBy = "thesis", fetch = FetchType.LAZY)
     private List<ThesisUserRole> thesisUserRoles;

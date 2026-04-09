@@ -15,6 +15,19 @@ INSERT INTO "role" (role_name) VALUES
                                    ('SUPERVISOR'),
                                    ('ADMIN');
 
+
+INSERT INTO student (name, second_name, email, student_number) VALUES
+                                                                   ('Karl', 'Tamm', 'karl.tamm@student.ee', 'S1001'),
+                                                                   ('Maria', 'Kask', 'maria.kask@student.ee', 'S1002'),
+                                                                   ('Jaan', 'Saar', 'jaan.saar@student.ee', 'S1003'),
+                                                                   ('Liis', 'Mägi', 'liis.magi@student.ee', 'S1004'),
+                                                                   ('Rasmus', 'Põld', 'rasmus.pold@student.ee', 'S1005'),
+                                                                   ('Helen', 'Kask', 'helen.kask@student.ee', 'S1006'),
+                                                                   ('Marko', 'Vaher', 'marko.vaher@student.ee', 'S1007'),
+                                                                   ('Sandra', 'Kuusk', 'sandra.kuusk@student.ee', 'S1008'),
+                                                                   ('Oliver', 'Põder', 'oliver.poder@student.ee', 'S1009'),
+                                                                   ('Grete', 'Saar', 'grete.saar@student.ee', 'S1010');
+
 -- =========================
 -- INSERT USERS
 -- =========================
@@ -29,7 +42,7 @@ INSERT INTO "user" (name, second_name, email, password) VALUES
 -- INSERT THESIS
 -- =========================
 INSERT INTO thesis (
-    student_name,
+    student_id,
     curriculum,
     level_of_studies,
     language_of_thesis,
@@ -38,54 +51,55 @@ INSERT INTO thesis (
     title_english,
     session_id
 ) VALUES
--- ===== SESSION 1 =====
-('Karl Tamm', 'ASDASD', 'Bachelor', 'Estonian', 6,
+
+-- SESSION 1
+(1, 'ASDASD', 'Bachelor', 'Estonian', 6,
  'Veebirakenduse arendus mikroteenuste arhitektuuriga',
  'Development of a Web Application Using Microservices Architecture',
  1),
 
-('Maria Kask', 'AAAA', 'Master', 'English', 30,
+(2, 'AAAA', 'Master', 'English', 30,
  'Masinõppe mudelite optimeerimine suurandmete töötlemisel',
  'Optimization of Machine Learning Models for Big Data Processing',
  1),
 
-('Jaan Saar', 'A3131', 'Bachelor', 'English', 12,
+(3, 'A3131', 'Bachelor', 'English', 12,
  'Turvaline autentimine JWT abil Spring Boot rakendustes',
  'Secure Authentication Using JWT in Spring Boot Applications',
  1),
 
-('Liis Mägi', 'PPPD', 'Master', 'Estonian', 24,
+(4, 'PPPD', 'Master', 'Estonian', 24,
  'Pilvepõhise e-kaubanduse platvormi skaleeritavus',
  'Scalability of a Cloud-Based E-Commerce Platform',
  1),
 
-('Rasmus Põld', 'DJKJJ', 'Bachelor', 'Estonian', 6,
+(5, 'DJKJJ', 'Bachelor', 'Estonian', 6,
  'Andmebaasi jõudluse analüüs ja optimeerimine PostgreSQL-is',
  'Database Performance Analysis and Optimization in PostgreSQL',
  1),
 
--- ===== SESSION 2 =====
-('Helen Kask', 'IT-2024', 'Bachelor', 'Estonian', 6,
+-- SESSION 2
+(6, 'IT-2024', 'Bachelor', 'Estonian', 6,
  'Reaalajas andmetöötlus Node.js abil',
  'Real-Time Data Processing Using Node.js',
  2),
 
-('Marko Vaher', 'CS-MA', 'Master', 'English', 30,
+(7, 'CS-MA', 'Master', 'English', 30,
  'Neuraalvõrkude tõlgendatavus meditsiinis',
  'Interpretability of Neural Networks in Medical Diagnostics',
  2),
 
-('Sandra Kuusk', 'INF-BA', 'Bachelor', 'English', 12,
+(8, 'INF-BA', 'Bachelor', 'English', 12,
  'Andmeturve pilvepõhistes süsteemides',
  'Data Security in Cloud-Based Systems',
  2),
 
-('Oliver Põder', 'CS-MA', 'Master', 'Estonian', 24,
+(9, 'CS-MA', 'Master', 'Estonian', 24,
  'Masinõppe mudelite efektiivne treenimine GPU-del',
  'Efficient Training of Machine Learning Models on GPUs',
  2),
 
-('Grete Saar', 'IT-2024', 'Bachelor', 'English', 6,
+(10, 'IT-2024', 'Bachelor', 'English', 6,
  'Veebirakenduste testimise automatiseerimine',
  'Automated Testing of Web Applications',
  2);
@@ -100,7 +114,7 @@ INSERT INTO session_user_role (session_id, user_id, role_id) VALUES
 -- SESSION 2
 INSERT INTO session_user_role (session_id, user_id, role_id) VALUES
                                                                  (2, 2, 1),
-                                                                 (2, 4, 1),
+                                                                 (2, 6, 1),
                                                                  (2, 3, 2);
 
 
@@ -128,6 +142,32 @@ INSERT INTO thesis_user_role (thesis_id, user_id, role_id) VALUES
 INSERT INTO thesis_user_role (thesis_id, user_id, role_id) VALUES
                                                                (5, 4, 3),
                                                                (5, 6, 4);
+
+-- Assign reviewer and supervisor for SESSION 2 theses
+-- Thesis 6
+INSERT INTO thesis_user_role (thesis_id, user_id, role_id) VALUES
+                                                               (6, 4, 3),  -- Katrin → REVIEWER
+                                                               (6, 6, 4);  -- Helena → SUPERVISOR
+
+-- Thesis 7
+INSERT INTO thesis_user_role (thesis_id, user_id, role_id) VALUES
+                                                               (7, 4, 3),
+                                                               (7, 6, 4);
+
+-- Thesis 8
+INSERT INTO thesis_user_role (thesis_id, user_id, role_id) VALUES
+                                                               (8, 4, 3),
+                                                               (8, 6, 4);
+
+-- Thesis 9
+INSERT INTO thesis_user_role (thesis_id, user_id, role_id) VALUES
+                                                               (9, 4, 3),
+                                                               (9, 6, 4);
+
+-- Thesis 10
+INSERT INTO thesis_user_role (thesis_id, user_id, role_id) VALUES
+                                                               (10, 4, 3),
+                                                               (10, 6, 4);
 
 INSERT INTO reviewer_grade (
     content_score,
@@ -246,17 +286,5 @@ INSERT INTO supervisor_form (
     'Very good collaboration and initiative.',
     'Demonstrates strong engineering skills.',
     4,
-    6
-),
-
--- Thesis 5
-(
-    'The research focuses on database performance optimization in PostgreSQL.',
-    'The student performed benchmarking and applied optimization techniques.',
-    'Good experimental work and practical insights.',
-    'Limited coverage of distributed database systems.',
-    'Consistent and reliable cooperation.',
-    'A well-structured and useful thesis.',
-    5,
     6
 );

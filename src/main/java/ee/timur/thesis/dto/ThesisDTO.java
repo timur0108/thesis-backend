@@ -10,6 +10,9 @@ public class ThesisDTO {
 
     private Long id;
     private String studentName;
+    private String studentSecondName;
+    private String studentEmail;
+    private String studentNumber;
     private String levelOfStudies;
     private String languageOfThesis;
     private Integer volumeEcts;
@@ -18,6 +21,11 @@ public class ThesisDTO {
     private String finalGradeLetter;
     private Integer finalGradeNumber;
     private List<String> roles;
+    private List<UserDTO> committeeMembers;
+    private UserDTO headOfCommittee;
+    private UserDTO reviewer;
+    private UserDTO supervisor;
+    private List<UserDTO> coSupervisors;
     private Long sessionId;
     private LocalDate sessionStartDate;
     private LocalDate sessionEndDate;

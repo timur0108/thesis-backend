@@ -14,6 +14,10 @@ public interface ThesisMapper {
     @Mapping(target = "sessionId", source = "session.id")
     @Mapping(target = "sessionStartDate", source = "session.startDate")
     @Mapping(target = "sessionEndDate", source = "session.endDate")
+    @Mapping(target = "studentName", source = "student.name")
+    @Mapping(target = "studentSecondName", source = "student.secondName")
+    @Mapping(target = "studentEmail", source = "student.email")
+    @Mapping(target = "studentNumber", source = "student.studentNumber")
     ThesisDTO toDTO(Thesis thesis);
 
     @Mapping(target = "id", ignore = true)

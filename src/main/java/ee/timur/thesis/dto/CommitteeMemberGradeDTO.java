@@ -5,6 +5,7 @@ import lombok.Data;
 @Data
 public class CommitteeMemberGradeDTO {
 
+    private Long id;
     private Long thesisId;
     private Integer contentScore;
     private Integer complexityScore;

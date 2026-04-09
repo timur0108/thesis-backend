@@ -16,5 +16,10 @@ public interface SupervisorFormMapper {
     @Mapping(target = "user", source = "user")
     SupervisorForm toEntityFromThesisCreateDTO(ThesisCreateDTO thesisCreateDTO, Thesis thesis, User user);
 
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "thesis", source = "thesis")
+    @Mapping(target = "user", source = "user")
+    SupervisorForm toEntity(SupervisorFormDTO dto, Thesis thesis, User user);
+
     SupervisorFormDTO toDTO(SupervisorForm supervisorForm);
 }

@@ -7,7 +7,9 @@ DROP TABLE IF EXISTS supervisor_form;
 DROP TABLE IF EXISTS "user";
 DROP TABLE IF EXISTS "role";
 DROP TABLE IF EXISTS thesis;
+DROP TABLE IF EXISTS student;
 DROP TABLE IF EXISTS "session";
+
 
 CREATE TABLE IF NOT EXISTS "session" (
     id BIGSERIAL PRIMARY KEY,
@@ -15,9 +17,19 @@ CREATE TABLE IF NOT EXISTS "session" (
     end_date DATE
 );
 
+CREATE TABLE student (
+                         id BIGSERIAL PRIMARY KEY,
+
+                         name VARCHAR(100) NOT NULL,
+                         second_name VARCHAR(100) NOT NULL,
+                         email VARCHAR(255),
+
+                         student_number VARCHAR(50) UNIQUE
+);
+
 CREATE TABLE IF NOT EXISTS thesis (
     id BIGSERIAL PRIMARY KEY,
-    student_name VARCHAR(255) NOT NULL,
+    student_id BIGINT NOT NULL,
     curriculum VARCHAR(255) NOT NULL,
     level_of_studies VARCHAR(50) NOT NULL,
     language_of_thesis VARCHAR(50) NOT NULL,
@@ -27,7 +39,10 @@ CREATE TABLE IF NOT EXISTS thesis (
     session_id BIGINT,
     CONSTRAINT fk_thesis_session
     FOREIGN KEY (session_id)
-    REFERENCES "session"(id)
+    REFERENCES "session"(id),
+    CONSTRAINT fk_thesis_student
+    FOREIGN KEY (student_id)
+    REFERENCES student(id)
 );
 
 
@@ -43,7 +58,7 @@ CREATE TABLE IF NOT EXISTS "user" (
     second_name VARCHAR(100) NOT NULL,
     email VARCHAR(255) UNIQUE NOT NULL,
     password VARCHAR(255) NOT NULL,
-    role_id BIGINT,
+
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 
 );

@@ -7,6 +7,7 @@ import ee.timur.thesis.model.SupervisorForm;
 import ee.timur.thesis.model.Thesis;
 import ee.timur.thesis.model.User;
 import ee.timur.thesis.repository.SupervisorFormRepository;
+import ee.timur.thesis.repository.ThesisRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +21,7 @@ public class SupervisorFormService {
 
     private final SupervisorFormRepository supervisorFormRepository;
     private final SupervisorFormMapper supervisorFormMapper;
+    private final ThesisRepository thesisRepository;
 
     @PersistenceContext
     private final EntityManager entityManager;
@@ -35,6 +37,15 @@ public class SupervisorFormService {
     public SupervisorFormDTO getSupervisorForm(Long thesisId) {
         return supervisorFormMapper.toDTO(
           supervisorFormRepository.findSupervisorFormByThesisId(thesisId).orElseThrow()
+        );
+    }
+
+    public SupervisorFormDTO saveSupervisorForm(SupervisorFormDTO supervisorFormDTO, Long thesisId) {
+        Long userId = (Long) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = entityManager.getReference(User.class, userId);
+        Thesis thesis = thesisRepository.getReferenceById(thesisId);
+        return supervisorFormMapper.toDTO(
+                supervisorFormRepository.save(supervisorFormMapper.toEntity(supervisorFormDTO, thesis, user))
         );
     }
 }

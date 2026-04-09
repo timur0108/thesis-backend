@@ -50,10 +50,9 @@ public class GradeService {
 
     @Transactional
     public CommitteeMemberGradeDTO updateCommitteeMemberGrade(CommitteeMemberGradeDTO dto) {
-        Long userId = (Long) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        CommitteeMemberGrade existingGrade = committeeMemberGradeRepository
-                .findGradeByThesisAndUser(dto.getThesisId(), userId)
-                .orElseThrow();
+        CommitteeMemberGrade existingGrade =
+                committeeMemberGradeRepository.findById(dto.getId()).orElseThrow();
+
 
         existingGrade.setAppearanceScore(dto.getAppearanceScore());
         existingGrade.setPresentationScore(dto.getPresentationScore());
