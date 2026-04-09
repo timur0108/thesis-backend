@@ -37,6 +37,7 @@ CREATE TABLE IF NOT EXISTS thesis (
     title_estonian TEXT NOT NULL,
     title_english TEXT NOT NULL,
     session_id BIGINT,
+    grades_visible BOOLEAN NOT NULL DEFAULT FALSE,
     CONSTRAINT fk_thesis_session
     FOREIGN KEY (session_id)
     REFERENCES "session"(id),

@@ -10,6 +10,7 @@ import ee.timur.thesis.model.Thesis;
 import ee.timur.thesis.model.User;
 import ee.timur.thesis.repository.CommitteeMemberGradeRepository;
 import ee.timur.thesis.repository.ReviewerGradeRepository;
+import ee.timur.thesis.repository.ThesisRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +21,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -30,6 +32,7 @@ public class GradeService {
     private final CommitteeMemberGradeRepository committeeMemberGradeRepository;
     private final ReviewerGradeMapper reviewerGradeMapper;
     private final CommitteeMemberGradeMapper committeeMemberGradeMapper;
+    private final ThesisRepository thesisRepository;
 
     @PersistenceContext
     private final EntityManager entityManager;
@@ -93,16 +96,22 @@ public class GradeService {
 
     public List<CommitteeMemberGradeDTO> getAllCommitteeGradesOfOtherMembers(Long thesisId) {
 
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        boolean isHead = authentication.getAuthorities().stream()
-                .anyMatch(a -> a.getAuthority().equals("HEAD_OF_COMMITTEE"));
-
         Long userId = (Long) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return committeeMemberGradeRepository.findGradesByThesis(thesisId).stream()
-                .filter(grade -> isHead || grade.getVisibleToOthers())
+        boolean isHead = thesisRepository.getRolesFromSession(thesisId, userId).stream()
+                .anyMatch(a -> a.equals("HEAD_OF_COMMITTEE"));
+
+        Thesis thesis = thesisRepository.findById(thesisId).orElseThrow();
+        System.out.println(isHead + " !!!! " + thesis.getGradesVisible());
+        return isHead || thesis.getGradesVisible()? committeeMemberGradeRepository.findGradesByThesis(thesisId).stream()
                 .filter(grade -> !grade.getUser().getId().equals(userId))
                 .map(committeeMemberGradeMapper::toDTO)
-                .toList();
+                .toList() : Collections.emptyList();
+
+//        return committeeMemberGradeRepository.findGradesByThesis(thesisId).stream()
+//                .filter(grade -> isHead || grade.getVisibleToOthers())
+//                .filter(grade -> !grade.getUser().getId().equals(userId))
+//                .map(committeeMemberGradeMapper::toDTO)
+//                .toList();
     }
 
     public CommitteeMemberGradeDTO getCommitteeMemberGrade(Long thesisId) {
@@ -116,35 +125,54 @@ public class GradeService {
 
     @Transactional
     public List<CommitteeMemberGradeDTO> makeCommitteeMemberGradesVisible(Long thesisId) {
+
+        Thesis thesis = thesisRepository.findById(thesisId).orElseThrow();
+        thesis.setGradesVisible(true);
+        thesis = thesisRepository.save(thesis);
         Long userId = (Long) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return committeeMemberGradeRepository.saveAll(
-                committeeMemberGradeRepository.findGradesByThesis(thesisId).stream()
-                        .map(grade -> {
-                            grade.setVisibleToOthers(true);
-                            return grade;
-                        })
-                        .toList()
-        ).stream()
+        return committeeMemberGradeRepository.findGradesByThesis(thesisId).stream()
                 .filter(grade -> !grade.getUser().getId().equals(userId))
                 .map(committeeMemberGradeMapper::toDTO)
                 .toList();
+
+//        Long userId = (Long) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//        return committeeMemberGradeRepository.saveAll(
+//                committeeMemberGradeRepository.findGradesByThesis(thesisId).stream()
+//                        .map(grade -> {
+//                            grade.setVisibleToOthers(true);
+//                            return grade;
+//                        })
+//                        .toList()
+//        ).stream()
+//                .filter(grade -> !grade.getUser().getId().equals(userId))
+//                .map(committeeMemberGradeMapper::toDTO)
+//                .toList();
     }
 
 
     @Transactional
     public List<CommitteeMemberGradeDTO> hideCommitteeMemberGrades(Long thesisId) {
+
+        Thesis thesis = thesisRepository.findById(thesisId).orElseThrow();
+        thesis.setGradesVisible(false);
+        thesis = thesisRepository.save(thesis);
         Long userId = (Long) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return committeeMemberGradeRepository.saveAll(
-                        committeeMemberGradeRepository.findGradesByThesis(thesisId).stream()
-                                .map(grade -> {
-                                    grade.setVisibleToOthers(false);
-                                    return grade;
-                                })
-                                .toList()
-                ).stream()
+        return committeeMemberGradeRepository.findGradesByThesis(thesisId).stream()
                 .filter(grade -> !grade.getUser().getId().equals(userId))
                 .map(committeeMemberGradeMapper::toDTO)
                 .toList();
+//        Long userId = (Long) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//        return committeeMemberGradeRepository.saveAll(
+//                        committeeMemberGradeRepository.findGradesByThesis(thesisId).stream()
+//                                .map(grade -> {
+//                                    grade.setVisibleToOthers(false);
+//                                    return grade;
+//                                })
+//                                .toList()
+//                ).stream()
+//                .filter(grade -> !grade.getUser().getId().equals(userId))
+//                .map(committeeMemberGradeMapper::toDTO)
+//                .toList();
     }
 
     private void validateReviewerGrade(ReviewerGradeDTO reviewerGradeDTO) {
@@ -155,4 +183,7 @@ public class GradeService {
         return;
     }
 
+    public Boolean areGradesVisible(Long thesisId) {
+        return thesisRepository.findById(thesisId).orElseThrow().getGradesVisible();
+    }
 }

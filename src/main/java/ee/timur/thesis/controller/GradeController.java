@@ -69,4 +69,9 @@ public class GradeController {
     public List<CommitteeMemberGradeDTO> hideCommitteeMemberGrades(@PathVariable Long thesisId) {
         return gradeService.hideCommitteeMemberGrades(thesisId);
     }
+
+    @GetMapping("committee-member/grades-visible/{thesisId}")
+    public Boolean areGradesVisible(@PathVariable Long thesisId) {
+        return gradeService.areGradesVisible(thesisId);
+    }
 }

@@ -48,6 +48,10 @@ public class Thesis {
     private String titleEnglish;
 
     @NotNull
+    @Column(name = "grades_visible")
+    private Boolean gradesVisible;
+
+    @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "session_id")
     private Session session;
