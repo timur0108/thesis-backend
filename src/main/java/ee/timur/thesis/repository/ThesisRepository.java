@@ -15,7 +15,7 @@ public interface ThesisRepository extends JpaRepository<Thesis, Long> {
     @Query("select t from Thesis t left join fetch t.finalGrade")
     List<Thesis> findAllWithFinalGrade();
 
-    @Query("select t from Thesis t left join fetch t.finalGrade join t.thesisUserRoles tur join tur.role r where tur.user.id = :userId and r.roleName = 'SUPERVISOR'")
+    @Query("select t from Thesis t left join fetch t.finalGrade join t.thesisUserRoles tur join tur.role r where tur.user.id = :userId and (r.roleName = 'SUPERVISOR' or r.roleName = 'CO-SUPERVISOR')")
     List<Thesis> findSupervised(@Param("userId") Long userId);
 
     @Query("select t from Thesis t left join fetch t.finalGrade join t.thesisUserRoles tur join tur.role r where tur.user.id = :userId and r.roleName = 'REVIEWER'")

@@ -13,7 +13,8 @@ INSERT INTO "role" (role_name) VALUES
                                    ('HEAD_OF_COMMITTEE'),
                                    ('REVIEWER'),
                                    ('SUPERVISOR'),
-                                   ('ADMIN');
+                                   ('ADMIN'),
+                                   ('CO-SUPERVISOR');
 
 
 INSERT INTO student (name, second_name, email, student_number) VALUES
@@ -37,7 +38,11 @@ INSERT INTO "user" (name, second_name, email, password) VALUES
                                                                      ('Peeter', 'Saar', 'peeter.saar@university.ee', '$2a$10$WXufcyCXcMrs.sOGq/nsIeosdQG6/qJiQHVc0utq8i2KcaEb2MS1u'),
                                                                          ('Katrin', 'Mägi', 'katrin.magi@university.ee', '$2a$10$WXufcyCXcMrs.sOGq/nsIeosdQG6/qJiQHVc0utq8i2KcaEb2MS1u'),
                                                                      ('Timur', 'Sirazitdinov', 'timur.sirazitdinov@gmail.com', '$2a$10$WXufcyCXcMrs.sOGq/nsIeosdQG6/qJiQHVc0utq8i2KcaEb2MS1u'),
-                                                                     ('Helena', 'Kuusk', 'helena.kuusk@university.ee', '$2a$10$WXufcyCXcMrs.sOGq/nsIeosdQG6/qJiQHVc0utq8i2KcaEb2MS1u');
+                                                                     ('Helena', 'Kuusk', 'helena.kuusk@university.ee', '$2a$10$WXufcyCXcMrs.sOGq/nsIeosdQG6/qJiQHVc0utq8i2KcaEb2MS1u'),
+                                                                     ('Andres', 'Luts', 'andres.luts@university.ee', '$2a$10$WXufcyCXcMrs.sOGq/nsIeosdQG6/qJiQHVc0utq8i2KcaEb2MS1u'),
+                                                                     ('Kadri', 'Rebane', 'kadri.rebane@university.ee', '$2a$10$WXufcyCXcMrs.sOGq/nsIeosdQG6/qJiQHVc0utq8i2KcaEb2MS1u'),
+                                                                     ('Marek', 'Ilves', 'marek.ilves@university.ee', '$2a$10$WXufcyCXcMrs.sOGq/nsIeosdQG6/qJiQHVc0utq8i2KcaEb2MS1u'),
+                                                                     ('Eva', 'Laur', 'eva.laur@university.ee', '$2a$10$WXufcyCXcMrs.sOGq/nsIeosdQG6/qJiQHVc0utq8i2KcaEb2MS1u');
 -- =========================
 -- INSERT THESIS
 -- =========================
@@ -168,6 +173,28 @@ INSERT INTO thesis_user_role (thesis_id, user_id, role_id) VALUES
 INSERT INTO thesis_user_role (thesis_id, user_id, role_id) VALUES
                                                                (10, 4, 3),
                                                                (10, 6, 4);
+
+-- Thesis 1
+INSERT INTO thesis_user_role (thesis_id, user_id, role_id) VALUES
+                                                               (1, 7, 6),  -- Andres → co-supervisor
+                                                               (1, 8, 6);
+
+-- Thesis 2
+INSERT INTO thesis_user_role (thesis_id, user_id, role_id) VALUES
+                                                               (2, 9, 6),  -- Marek
+                                                               (2, 10, 6);
+
+-- Thesis 3
+INSERT INTO thesis_user_role (thesis_id, user_id, role_id) VALUES
+    (3, 7, 6);
+
+-- Thesis 4
+INSERT INTO thesis_user_role (thesis_id, user_id, role_id) VALUES
+    (4, 8, 6);
+
+-- Thesis 5
+INSERT INTO thesis_user_role (thesis_id, user_id, role_id) VALUES
+    (5, 9, 6);
 
 INSERT INTO reviewer_grade (
     content_score,

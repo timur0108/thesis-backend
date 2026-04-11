@@ -88,9 +88,15 @@ public class GradeService {
 
 
     public List<CommitteeMemberGradeDTO> getAllCommitteeMemberGrades(Long thesisId) {
-        return committeeMemberGradeRepository.findGradesByThesis(thesisId).stream()
+        Long userId = (Long) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        boolean isHead = thesisRepository.getRolesFromSession(thesisId, userId).stream()
+                .anyMatch(a -> a.equals("HEAD_OF_COMMITTEE"));
+
+        Thesis thesis = thesisRepository.findById(thesisId).orElseThrow();
+
+        return isHead || thesis.getGradesVisible()? committeeMemberGradeRepository.findGradesByThesis(thesisId).stream()
                 .map(committeeMemberGradeMapper::toDTO)
-                .toList();
+                .toList() : Collections.emptyList();
     }
 
 
