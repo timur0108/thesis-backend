@@ -60,7 +60,7 @@ public class Thesis {
     @JoinColumn(name = "student_id")
     private Student student;
 
-    @OneToMany(mappedBy = "thesis", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "thesis", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     private List<ThesisUserRole> thesisUserRoles;
 
     @OneToOne(mappedBy = "thesis", fetch = FetchType.LAZY)

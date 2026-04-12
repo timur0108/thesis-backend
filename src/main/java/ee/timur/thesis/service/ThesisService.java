@@ -1,13 +1,14 @@
 package ee.timur.thesis.service;
 
+import ee.timur.thesis.dto.NewThesisDTO;
 import ee.timur.thesis.dto.ThesisCreateDTO;
 import ee.timur.thesis.dto.ThesisDTO;
 import ee.timur.thesis.mapper.ThesisMapper;
 import ee.timur.thesis.mapper.UserMapper;
 import ee.timur.thesis.model.Thesis;
+import ee.timur.thesis.model.ThesisUserRole;
 import ee.timur.thesis.model.User;
-import ee.timur.thesis.repository.ThesisRepository;
-import ee.timur.thesis.repository.UserRepository;
+import ee.timur.thesis.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -27,6 +28,9 @@ public class ThesisService {
     private final SupervisorFormService supervisorFormService;
     private final UserRepository userRepository;
     private final UserMapper userMapper;
+    private final SessionRepository sessionRepository;
+    private final StudentRepository studentRepository;
+    private final RoleRepository roleRepository;
 
     public List<ThesisDTO> getAllThesises() {
         return thesisRepository.findAllWithFinalGrade().stream().map(thesisMapper::toDTO)
@@ -79,6 +83,24 @@ public class ThesisService {
 
         thesis = thesisRepository.save(thesis);
         supervisorFormService.saveSupervisorForm(dto, thesis);
+    }
+
+    public List<ThesisDTO> getAllBySessionId(Long sessionId) {
+        return thesisRepository.findBySessionId(sessionId).stream()
+                .map(thesisMapper::toDTO)
+                .map(thesis -> {
+                    thesis.setReviewer(userMapper.toDTO(userRepository.findReviewerByThesisId(thesis.getId()).orElseThrow()));
+                    thesis.setSupervisor(userMapper.toDTO(userRepository.findSupervisorByThesisId(thesis.getId()).orElseThrow()));
+                    thesis.setHeadOfCommittee(userMapper.toDTO(userRepository.findHeadOfCommitteeByThesis(thesis.getId()).orElseThrow()));
+                    thesis.setCommitteeMembers(userRepository.findCommitteeMembersByThesis(thesis.getId()).stream()
+                            .map(userMapper::toDTO)
+                            .toList());
+                    thesis.setCoSupervisors(userRepository.findCoSupervisorsByThesisId(thesis.getId()).stream()
+                            .map(userMapper::toDTO)
+                            .toList());
+                    return thesis;
+                })
+                .toList();
     }
 
     public List<ThesisDTO> getAllAssigned() {
@@ -187,5 +209,43 @@ public class ThesisService {
                     return thesis;
                 })
                 .toList();
+    }
+
+    public ThesisDTO addToSession(NewThesisDTO dto) {
+        var thesis = new Thesis();
+        thesis.setLevelOfStudies(dto.getLevelOfStudies());
+        thesis.setCurriculum(dto.getCurriculum());
+        thesis.setLanguageOfThesis(dto.getLanguageOfThesis());
+        thesis.setTitleEstonian(dto.getTitleEstonian());
+        thesis.setTitleEnglish(dto.getTitleEnglish());
+        thesis.setVolumeEcts(dto.getVolumeEcts());
+        thesis.setGradesVisible(false);
+        thesis.setSession(sessionRepository.getReferenceById(dto.getSessionId()));
+        thesis.setStudent(studentRepository.getReferenceById(dto.getStudentId()));
+
+        var thesisUserRoles = new ArrayList<ThesisUserRole>();
+
+        var reviewer = new ThesisUserRole();
+        reviewer.setThesis(thesis);
+        reviewer.setUser(userRepository.getReferenceById(dto.getReviewerId()));
+        reviewer.setRole(roleRepository.findByRoleNameEquals("REVIEWER").orElseThrow());
+        thesisUserRoles.add(reviewer);
+
+        var supervisor = new ThesisUserRole();
+        supervisor.setThesis(thesis);
+        supervisor.setUser(userRepository.getReferenceById(dto.getSupervisorId()));
+        supervisor.setRole(roleRepository.findByRoleNameEquals("SUPERVISOR").orElseThrow());
+        thesisUserRoles.add(supervisor);
+
+        dto.getCoSupervisorIds().forEach(coSupervisorId -> {
+            var coSupervisor = new ThesisUserRole();
+            coSupervisor.setThesis(thesis);
+            coSupervisor.setUser(userRepository.getReferenceById(coSupervisorId));
+            coSupervisor.setRole(roleRepository.findByRoleNameEquals("CO-SUPERVISOR").orElseThrow());
+            thesisUserRoles.add(coSupervisor);
+        });
+
+        thesis.setThesisUserRoles(thesisUserRoles);
+        return thesisMapper.toDTO(thesisRepository.save(thesis));
     }
 }

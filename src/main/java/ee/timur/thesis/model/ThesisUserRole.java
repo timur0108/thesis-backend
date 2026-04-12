@@ -1,9 +1,13 @@
 package ee.timur.thesis.model;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Table(name = "thesis_user_role")
+@Getter
+@Setter
 public class ThesisUserRole {
 
     @Id

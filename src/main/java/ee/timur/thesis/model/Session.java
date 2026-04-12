@@ -30,6 +30,6 @@ public class Session {
     @OneToMany(mappedBy = "session", fetch = FetchType.LAZY)
     private List<Thesis> theses;
 
-    @OneToMany(mappedBy = "session")
+    @OneToMany(mappedBy = "session", cascade = CascadeType.PERSIST)
     private List<SessionUserRole> sessionUserRoles;
 }

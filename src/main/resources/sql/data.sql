@@ -32,17 +32,17 @@ INSERT INTO student (name, second_name, email, student_number) VALUES
 -- =========================
 -- INSERT USERS
 -- =========================
-INSERT INTO "user" (name, second_name, email, password) VALUES
-                                                                     ('Jaan', 'Tamm', 'jaan.tamm@university.ee', '$2a$10$WXufcyCXcMrs.sOGq/nsIeosdQG6/qJiQHVc0utq8i2KcaEb2MS1u'),
-                                                                     ('Mari', 'Kask', 'mari.kask@university.ee', '$2a$10$WXufcyCXcMrs.sOGq/nsIeosdQG6/qJiQHVc0utq8i2KcaEb2MS1u'),
-                                                                     ('Peeter', 'Saar', 'peeter.saar@university.ee', '$2a$10$WXufcyCXcMrs.sOGq/nsIeosdQG6/qJiQHVc0utq8i2KcaEb2MS1u'),
-                                                                         ('Katrin', 'Mägi', 'katrin.magi@university.ee', '$2a$10$WXufcyCXcMrs.sOGq/nsIeosdQG6/qJiQHVc0utq8i2KcaEb2MS1u'),
-                                                                     ('Timur', 'Sirazitdinov', 'timur.sirazitdinov@gmail.com', '$2a$10$WXufcyCXcMrs.sOGq/nsIeosdQG6/qJiQHVc0utq8i2KcaEb2MS1u'),
-                                                                     ('Helena', 'Kuusk', 'helena.kuusk@university.ee', '$2a$10$WXufcyCXcMrs.sOGq/nsIeosdQG6/qJiQHVc0utq8i2KcaEb2MS1u'),
-                                                                     ('Andres', 'Luts', 'andres.luts@university.ee', '$2a$10$WXufcyCXcMrs.sOGq/nsIeosdQG6/qJiQHVc0utq8i2KcaEb2MS1u'),
-                                                                     ('Kadri', 'Rebane', 'kadri.rebane@university.ee', '$2a$10$WXufcyCXcMrs.sOGq/nsIeosdQG6/qJiQHVc0utq8i2KcaEb2MS1u'),
-                                                                     ('Marek', 'Ilves', 'marek.ilves@university.ee', '$2a$10$WXufcyCXcMrs.sOGq/nsIeosdQG6/qJiQHVc0utq8i2KcaEb2MS1u'),
-                                                                     ('Eva', 'Laur', 'eva.laur@university.ee', '$2a$10$WXufcyCXcMrs.sOGq/nsIeosdQG6/qJiQHVc0utq8i2KcaEb2MS1u');
+INSERT INTO "user" (name, second_name, email, password, is_admin) VALUES
+                                                                     ('Jaan', 'Tamm', 'jaan.tamm@university.ee', '$2a$10$WXufcyCXcMrs.sOGq/nsIeosdQG6/qJiQHVc0utq8i2KcaEb2MS1u', false),
+                                                                     ('Mari', 'Kask', 'mari.kask@university.ee', '$2a$10$WXufcyCXcMrs.sOGq/nsIeosdQG6/qJiQHVc0utq8i2KcaEb2MS1u', false),
+                                                                     ('Peeter', 'Saar', 'peeter.saar@university.ee', '$2a$10$WXufcyCXcMrs.sOGq/nsIeosdQG6/qJiQHVc0utq8i2KcaEb2MS1u', false),
+                                                                         ('Katrin', 'Mägi', 'katrin.magi@university.ee', '$2a$10$WXufcyCXcMrs.sOGq/nsIeosdQG6/qJiQHVc0utq8i2KcaEb2MS1u', false),
+                                                                     ('Timur', 'Sirazitdinov', 'timur.sirazitdinov@gmail.com', '$2a$10$WXufcyCXcMrs.sOGq/nsIeosdQG6/qJiQHVc0utq8i2KcaEb2MS1u', true),
+                                                                     ('Helena', 'Kuusk', 'helena.kuusk@university.ee', '$2a$10$WXufcyCXcMrs.sOGq/nsIeosdQG6/qJiQHVc0utq8i2KcaEb2MS1u', false),
+                                                                     ('Andres', 'Luts', 'andres.luts@university.ee', '$2a$10$WXufcyCXcMrs.sOGq/nsIeosdQG6/qJiQHVc0utq8i2KcaEb2MS1u', false),
+                                                                     ('Kadri', 'Rebane', 'kadri.rebane@university.ee', '$2a$10$WXufcyCXcMrs.sOGq/nsIeosdQG6/qJiQHVc0utq8i2KcaEb2MS1u', false),
+                                                                     ('Marek', 'Ilves', 'marek.ilves@university.ee', '$2a$10$WXufcyCXcMrs.sOGq/nsIeosdQG6/qJiQHVc0utq8i2KcaEb2MS1u', false),
+                                                                     ('Eva', 'Laur', 'eva.laur@university.ee', '$2a$10$WXufcyCXcMrs.sOGq/nsIeosdQG6/qJiQHVc0utq8i2KcaEb2MS1u', false);
 -- =========================
 -- INSERT THESIS
 -- =========================

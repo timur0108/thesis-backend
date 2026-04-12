@@ -37,7 +37,7 @@ public class AuthService {
         String accessToken = jwtService.generateAccessToken(user);
         String refreshToken = jwtService.generateRefreshToken(user.getUsername());
 
-        return new AuthResult(accessToken, refreshToken, user.getEmail(), null);
+        return new AuthResult(accessToken, refreshToken, user.getEmail(), user.getIsAdmin()? "ADMIN" : null);
     }
 
     // exception handling

@@ -51,4 +51,20 @@ public interface UserRepository extends JpaRepository<User, Long> {
             "select u from User u join ThesisUserRole tur on tur.user = u where tur.thesis.id = :thesisId and tur.role.roleName = 'CO-SUPERVISOR'"
     )
     List<User> findCoSupervisorsByThesisId(@Param("thesisId") Long thesisId);
+
+    @Query("""
+        select sur.user
+        from SessionUserRole sur
+        where sur.session.id = :sessionId
+          and sur.role.roleName = 'HEAD_OF_COMMITTEE'
+    """)
+    Optional<User> findHeadOfCommitteeBySessionId(Long sessionId);
+
+    @Query("""
+        select sur.user
+        from SessionUserRole sur
+        where sur.session.id = :sessionId
+          and sur.role.roleName = 'COMMITTEE_MEMBER'
+    """)
+    List<User> findCommitteeMembersBySessionId(Long sessionId);
 }

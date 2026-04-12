@@ -51,4 +51,9 @@ public interface ThesisRepository extends JpaRepository<Thesis, Long> {
        or tur.user.id = :userId
 """)
     List<Thesis> findAllAssigned(@Param("userId") Long userId);
+
+    @Query(
+            "select t from Thesis t where t.session.id = :sessionId"
+    )
+    List<Thesis> findBySessionId(@Param("sessionId") Long sessionId);
 }

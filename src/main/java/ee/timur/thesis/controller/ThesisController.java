@@ -1,5 +1,6 @@
 package ee.timur.thesis.controller;
 
+import ee.timur.thesis.dto.NewThesisDTO;
 import ee.timur.thesis.dto.ThesisCreateDTO;
 import ee.timur.thesis.dto.ThesisDTO;
 import ee.timur.thesis.service.ThesisService;
@@ -51,5 +52,10 @@ public class ThesisController {
     @GetMapping("/committee")
     public List<ThesisDTO> getCommittee() {
         return thesisService.getCommittee();
+    }
+
+    @PostMapping("/add-to-session")
+    public ThesisDTO addThesisToSession(@RequestBody NewThesisDTO dto) {
+        return thesisService.addToSession(dto);
     }
 }
