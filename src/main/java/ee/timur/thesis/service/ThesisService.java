@@ -86,9 +86,20 @@ public class ThesisService {
     }
 
     public List<ThesisDTO> getAllBySessionId(Long sessionId) {
+        Long userId = (Long) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = userRepository.findById(userId).orElseThrow();
         return thesisRepository.findBySessionId(sessionId).stream()
                 .map(thesisMapper::toDTO)
                 .map(thesis -> {
+
+                    List<String> thesisRoles = thesisRepository.getRolesFromThesis(thesis.getId(), userId);
+                    List<String> sessionRoles = thesisRepository.getRolesFromSession(thesis.getId(), userId);
+
+                    Set<String> allRoles = new HashSet<>();
+                    allRoles.addAll(thesisRoles);
+                    allRoles.addAll(sessionRoles);
+                    thesis.setRoles(new ArrayList<>(allRoles));
+
                     thesis.setReviewer(userMapper.toDTO(userRepository.findReviewerByThesisId(thesis.getId()).orElseThrow()));
                     thesis.setSupervisor(userMapper.toDTO(userRepository.findSupervisorByThesisId(thesis.getId()).orElseThrow()));
                     thesis.setHeadOfCommittee(userMapper.toDTO(userRepository.findHeadOfCommitteeByThesis(thesis.getId()).orElseThrow()));
@@ -100,6 +111,7 @@ public class ThesisService {
                             .toList());
                     return thesis;
                 })
+                .filter(dto -> user.getIsAdmin() || !dto.getRoles().isEmpty())
                 .toList();
     }
 
