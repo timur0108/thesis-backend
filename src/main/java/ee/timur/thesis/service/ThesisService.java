@@ -117,6 +117,20 @@ public class ThesisService {
 
     public List<ThesisDTO> getAllAssigned() {
         Long userId = (Long) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = userRepository.findById(userId).orElseThrow();
+        if (user.getIsAdmin()) return thesisRepository.findAll().stream().map(thesisMapper::toDTO)
+                .map(thesis -> {
+                    thesis.setReviewer(userMapper.toDTO(userRepository.findReviewerByThesisId(thesis.getId()).orElseThrow()));
+                    thesis.setSupervisor(userMapper.toDTO(userRepository.findSupervisorByThesisId(thesis.getId()).orElseThrow()));
+                    thesis.setHeadOfCommittee(userMapper.toDTO(userRepository.findHeadOfCommitteeByThesis(thesis.getId()).orElseThrow()));
+                    thesis.setCommitteeMembers(userRepository.findCommitteeMembersByThesis(thesis.getId()).stream()
+                            .map(userMapper::toDTO)
+                            .toList());
+                    thesis.setCoSupervisors(userRepository.findCoSupervisorsByThesisId(thesis.getId()).stream()
+                            .map(userMapper::toDTO)
+                            .toList());
+                    return thesis;
+                }).toList();
         return thesisRepository.findAllAssigned(userId).stream()
                 .map(thesisMapper::toDTO)
                 .map(thesis -> {
