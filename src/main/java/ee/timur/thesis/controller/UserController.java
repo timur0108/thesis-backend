@@ -27,4 +27,14 @@ public class UserController {
     public List<UserDTO> getUnsubmittedCommitteeMembers(@PathVariable Long thesisId) {
         return userService.getUnsubmittedCommitteeMembers(thesisId);
     }
+
+    @GetMapping("committee-members/for-session/{sessionId}")
+    public List<UserDTO> getCommitteeMembersBySession(@PathVariable Long sessionId) {
+        return userService.getCommitteeMembersBySession(sessionId);
+    }
+
+    @GetMapping("head-of-committee/for-session/{sessionId}")
+    public UserDTO getHeadOfCommitteeBySession(@PathVariable Long sessionId) {
+        return userService.getHeadOfCommitteeBySession(sessionId);
+    }
 }
