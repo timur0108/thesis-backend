@@ -22,6 +22,7 @@ public class UserService {
 
     public List<UserDTO> getAll() {
         return userRepository.findAll().stream()
+                .filter(user -> !user.getIsAdmin())
                 .map(userMapper::toDTO)
                 .toList();
     }

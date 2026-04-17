@@ -11,6 +11,8 @@ import ee.timur.thesis.repository.ThesisRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+
 @Service
 @RequiredArgsConstructor
 public class FinalGradeService {
@@ -29,16 +31,15 @@ public class FinalGradeService {
         FinalGrade finalGrade = finalGradeRepository.save(finalGradeMapper.toEntity(finalGradeDTO, thesis));
         //validate thesis grades
         CommitteeMemberGrade committeeMemberGrade = committeeMemberGradeRepository.findGradesByThesis(thesis.getId()).getFirst();
-        int totalScore = (committeeMemberGrade.getPresentationScore() +
-                committeeMemberGrade.getAppearanceScore() + committeeMemberGrade.getComplexityScore() +
-                committeeMemberGrade.getContentScore()) * 5;
+        BigDecimal sum = committeeMemberGrade.getAppearanceScore().add(committeeMemberGrade.getPresentationScore()).add(committeeMemberGrade.getComplexityScore()).add(committeeMemberGrade.getContentScore());
+        BigDecimal totalScore = sum.multiply(BigDecimal.valueOf(5));
         finalGrade.setTotalScore(totalScore);
         String letter;
-        if (totalScore > 90) letter = "A";
-        else if (totalScore > 80) letter = "B";
-        else if (totalScore > 70) letter = "C";
-        else if (totalScore > 60) letter = "D";
-        else if (totalScore > 50) letter = "E";
+        if (totalScore.compareTo(BigDecimal.valueOf(90)) > 0) letter = "A";
+        else if (totalScore.compareTo(BigDecimal.valueOf(80)) > 0) letter = "B";
+        else if (totalScore.compareTo(BigDecimal.valueOf(70)) > 0) letter = "C";
+        else if (totalScore.compareTo(BigDecimal.valueOf(60)) > 0) letter = "D";
+        else if (totalScore.compareTo(BigDecimal.valueOf(50)) > 0) letter = "E";
         else letter = "F";
         finalGrade.setLetterGrade(letter);
         return finalGradeMapper.toDTO(finalGradeRepository.save(finalGrade));

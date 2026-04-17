@@ -2,6 +2,8 @@ package ee.timur.thesis.dto;
 
 import lombok.Data;
 
+import java.math.BigDecimal;
+
 @Data
 public class FinalGradeDTO {
 
@@ -9,7 +11,7 @@ public class FinalGradeDTO {
     private Integer complexityScore;
     private Integer appearanceScore;
     private Integer presentationScore;
-    private Integer totalScore;
+    private BigDecimal totalScore;
     private String letterGrade;
     private Long thesisId;
 }

@@ -105,13 +105,13 @@ CREATE TABLE thesis_user_role (
 CREATE TABLE reviewer_grade (
                         id BIGSERIAL PRIMARY KEY,
 
-                        content_score INTEGER NOT NULL,
+                        content_score DECIMAL(5,1) NOT NULL,
                         content_reasoning TEXT,
 
-                        complexity_score INTEGER NOT NULL,
+                        complexity_score DECIMAL(5,1) NOT NULL,
                         complexity_reasoning TEXT,
 
-                        appearance_score INTEGER NOT NULL,
+                        appearance_score DECIMAL(5,1) NOT NULL,
                         appearance_reasoning TEXT,
 
                         evaluation_summary TEXT,
@@ -133,15 +133,15 @@ CREATE TABLE reviewer_grade (
 CREATE TABLE committee_member_grade (
                                 id BIGSERIAL PRIMARY KEY,
 
-                                content_score INTEGER NOT NULL,
+                                content_score DECIMAL(5,1) NOT NULL,
 
 
-                                complexity_score INTEGER NOT NULL,
+                                complexity_score DECIMAL(5,1) NOT NULL,
 
 
-                                appearance_score INTEGER NOT NULL,
+                                appearance_score DECIMAL(5,1) NOT NULL,
 
-                                presentation_score INTEGER NOT NULL,
+                                presentation_score DECIMAL(5,1) NOT NULL,
                                 visible_to_others BOOLEAN NOT NULL DEFAULT FALSE,
 
                                 thesis_id BIGINT,
@@ -182,12 +182,12 @@ CREATE TABLE supervisor_form(
 CREATE TABLE final_grade(
                                         id BIGSERIAL PRIMARY KEY,
 
-                                        content_score INTEGER NOT NULL,
+                                        content_score DECIMAL(5,1) NOT NULL,
 
-                                        complexity_score INTEGER NOT NULL,
-                                        appearance_score INTEGER NOT NULL,
-                                        presentation_score INTEGER NOT NULL,
-                                        total_score INTEGER NOT NULL,
+                                        complexity_score DECIMAL(5,1) NOT NULL,
+                                        appearance_score DECIMAL(5,1) NOT NULL,
+                                        presentation_score DECIMAL(5,1) NOT NULL,
+                                        total_score DECIMAL(5,1) NOT NULL,
                                         letter_grade VARCHAR(1) CHECK (letter_grade IN ('A','B','C','D','E','F')),
                                         thesis_id BIGINT,
                                         CONSTRAINT fk_final_grade_thesis

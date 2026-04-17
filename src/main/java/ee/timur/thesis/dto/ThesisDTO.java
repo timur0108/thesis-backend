@@ -2,6 +2,7 @@ package ee.timur.thesis.dto;
 
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -19,7 +20,7 @@ public class ThesisDTO {
     private String titleEstonian;
     private String titleEnglish;
     private String finalGradeLetter;
-    private Integer finalGradeNumber;
+    private BigDecimal finalGradeNumber;
     private List<String> roles;
     private List<UserDTO> committeeMembers;
     private UserDTO headOfCommittee;

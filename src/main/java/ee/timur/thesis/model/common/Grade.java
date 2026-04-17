@@ -7,6 +7,8 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.math.BigDecimal;
+
 @MappedSuperclass
 @Getter
 @Setter
@@ -18,15 +20,15 @@ public class Grade {
 
     @Column(name = "content_score")
     @NotNull
-    private Integer contentScore;
+    private BigDecimal contentScore;
 
     @Column(name = "complexity_score")
     @NotNull
-    private Integer complexityScore;
+    private BigDecimal complexityScore;
 
     @Column(name = "appearance_score")
     @NotNull
-    private Integer appearanceScore;
+    private BigDecimal appearanceScore;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)

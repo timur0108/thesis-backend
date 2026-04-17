@@ -10,6 +10,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
+
 @Entity
 @Getter
 @Setter
@@ -20,7 +22,7 @@ public class CommitteeMemberGrade extends Grade {
 
     @NotNull
     @Column(name = "presentation_score")
-    private Integer presentationScore;
+    private BigDecimal presentationScore;
 
     @NotNull
     @Column(name = "visible_to_others")

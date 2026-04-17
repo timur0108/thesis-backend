@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
+
 @Table(name = "final_grade")
 @Entity
 @Getter
@@ -21,23 +23,23 @@ public class FinalGrade {
 
     @Column(name = "content_score")
     @NotNull
-    private Integer contentScore;
+    private BigDecimal contentScore;
 
     @Column(name = "complexity_score")
     @NotNull
-    private Integer complexityScore;
+    private BigDecimal complexityScore;
 
     @Column(name = "appearance_score")
     @NotNull
-    private Integer appearanceScore;
+    private BigDecimal appearanceScore;
 
     @Column(name = "presentation_score")
     @NotNull
-    private Integer presentationScore;
+    private BigDecimal presentationScore;
 
     @Column(name = "total_score")
     @NotNull
-    private Integer totalScore;
+    private BigDecimal totalScore;
 
     @Column(name = "letter_grade", length = 1)
     private String letterGrade;
